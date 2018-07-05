@@ -39,6 +39,7 @@ public class MainGame extends View implements Runnable{
     public int temp=1;
     public int id=0;
     public int background;
+    public int background1;
     public boolean isLose=false;
     public int score=0;
     Random rand;
@@ -95,8 +96,11 @@ public class MainGame extends View implements Runnable{
         //飞机活动
         while ((!isLose)&&(!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
             background+=10;//背景移动
+            background1+=10;
             if(background>=2000){
-                background=0;
+                background=background1-2000;
+            }else if(background1>=2000){
+                background1=background-2000;
             }
             //产生敌机
             if(boss.visual==0){//如果BOSS不出现
@@ -430,7 +434,7 @@ public class MainGame extends View implements Runnable{
                                 }else{
                                     boss.life-=3;
                                 }
-                                if(boss.life==0){
+                                if(boss.life<=0){
                                     isWin=true;
                                 }
                                 pb[i].visual = 0;
@@ -441,12 +445,12 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //通关条件
-            if(boss.life==0){
+            if(boss.life<=0){
                 isWin=true;
                 boss.life=0;
             }
             //游戏结束
-            if(plane.life<=0){
+            if(plane.life <= 0){
                 isLose=true;
                 plane.life=0;
             }
@@ -462,7 +466,7 @@ public class MainGame extends View implements Runnable{
                             }
                             eb[i].visual=0;
                             eb[i].boo=2;
-                            if(plane.life==0){
+                            if(plane.life<=0){
                                 isLose=true;
                                 plane.life=0;
                             }
@@ -482,7 +486,7 @@ public class MainGame extends View implements Runnable{
                             }
                             bb[i].visual=0;
                             bb[i].boo=2;
-                            if(plane.life<=0){
+                            if(plane.life <= 0){
                                 isLose=true;
                                 plane.life=0;
                             }
@@ -539,6 +543,7 @@ public class MainGame extends View implements Runnable{
     Bitmap ENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)).getBitmap() : null;
     Bitmap STRENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)).getBitmap() : null;
     Bitmap BOO = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boo)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boo)).getBitmap() : null;
+    Bitmap BACK1 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back3)).getBitmap() : null;
     Bitmap BACK = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back)).getBitmap() : null;
     Bitmap TREA1 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)).getBitmap() : null;
     Bitmap TREA2 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)).getBitmap() : null;
@@ -548,7 +553,8 @@ public class MainGame extends View implements Runnable{
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         //画背景
-        canvas.drawBitmap(BACK,null,new Rect(0,background-2000,1300,background+2000),paint);
+        canvas.drawBitmap(BACK,null,new Rect(0,background-2000,1200,background+2000),paint);
+        canvas.drawBitmap(BACK1,null,new Rect(0,background1-2000,1200,background1+2000),paint);
         //显示己方生命值
         paint.setColor(Color.YELLOW);
         paint.setTextSize(40);
