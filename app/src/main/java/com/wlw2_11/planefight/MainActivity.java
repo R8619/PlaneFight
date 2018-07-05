@@ -13,7 +13,6 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_main);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//无标题
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示全屏
         Init();
@@ -23,7 +22,6 @@ public class MainActivity extends Activity {
         Display display = wm.getDefaultDisplay();//获取默认的屏幕
         MainGame gameView = new MainGame(this, display);//创建一个游戏视图
         gameView.setOnTouchListener(new touch());//新建一个游戏触摸视图
-       // gameView.setBackgroundColor(Color.RED);//设置背景颜色
         this.setContentView(gameView);
     }
 }

@@ -10,11 +10,13 @@ public class Plane {
     public int width;
     public int height;
     public int life;
+    public int boo;
     public Plane(){
         x=300;
         y=1400;
         width=97;
         height=124;
-        life=20;
+        life=40;
+        boo=0;
     }
 }
