@@ -1,5 +1,7 @@
 package com.wlw2_11.planefight;
 
+import android.app.Service;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -10,9 +12,15 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 public class MainActivity extends Activity {
+
+   // bindService(intent,coon,Service.BIND_AUTO_CREATE)
+     //Intent intent = new Intent(MainActivity.this, MusicServer.class);
+    //private Intent intent = new Intent("com.angel.Android.MUSIC");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // final Intent intent = new Intent(this,MusicServer.class);
+        //startService(intent);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//无标题
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示全屏
         Init();
@@ -23,6 +31,13 @@ public class MainActivity extends Activity {
         MainGame gameView = new MainGame(this, display);//创建一个游戏视图
         gameView.setOnTouchListener(new touch());//新建一个游戏触摸视图
         this.setContentView(gameView);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        //final Intent intent = new Intent(this,MusicServer.class);
+        //stopService(intent);
     }
 }
 class touch implements View.OnTouchListener{//触摸监听事件
@@ -37,4 +52,12 @@ class touch implements View.OnTouchListener{//触摸监听事件
         MainGame.Point_y = (int) event.getRawY();
         return true;
     }
+
+
+
+    /*protected void onDestroy() {
+
+        final Intent intent = new Intent(this,MusicServer.class);
+    }*/
+
 }

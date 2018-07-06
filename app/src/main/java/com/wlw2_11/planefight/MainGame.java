@@ -97,10 +97,10 @@ public class MainGame extends View implements Runnable{
         while ((!isLose)&&(!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
             background+=10;//背景移动
             background1+=10;
-            if(background>=2000){
-                background=background1-2000;
-            }else if(background1>=2000){
-                background1=background-2000;
+            if(background>=1184){
+                background=background1-1184;
+            }else if(background1>=1184){
+                background1=background-1184;
             }
             //产生敌机
             if(boss.visual==0){//如果BOSS不出现
@@ -553,7 +553,7 @@ public class MainGame extends View implements Runnable{
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
         //画背景
-        canvas.drawBitmap(BACK,null,new Rect(0,background-2000,1200,background+2000),paint);
+        canvas.drawBitmap(BACK,null,new Rect(0,background-2000,Screen_w,background+2000),paint);
         canvas.drawBitmap(BACK1,null,new Rect(0,background1-2000,1200,background1+2000),paint);
         //显示己方生命值
         paint.setColor(Color.YELLOW);
