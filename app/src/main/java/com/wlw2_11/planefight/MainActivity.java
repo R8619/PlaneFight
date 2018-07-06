@@ -2,6 +2,7 @@ package com.wlw2_11.planefight;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.SoundPool;
 import android.os.Bundle;
 
 import android.app.Activity;
@@ -19,8 +20,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-       // final Intent intent = new Intent(this,MusicServer.class);
-        //startService(intent);
+        final Intent intent = new Intent(this,MusicServer.class);
+        startService(intent);
         requestWindowFeature(Window.FEATURE_NO_TITLE);//无标题
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//显示全屏
         Init();
@@ -36,8 +37,8 @@ public class MainActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        //final Intent intent = new Intent(this,MusicServer.class);
-        //stopService(intent);
+        final Intent intent = new Intent(this,MusicServer.class);
+        stopService(intent);
     }
 }
 class touch implements View.OnTouchListener{//触摸监听事件

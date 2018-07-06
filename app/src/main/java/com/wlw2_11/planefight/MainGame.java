@@ -7,10 +7,13 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -52,8 +55,10 @@ public class MainGame extends View implements Runnable{
     BBullet[] bb;
     Enemy[] enemy;
     Strenemy[] strenemy;
+    private Context mcontext;
     public MainGame(Context context, Display display) {//初始化
         super(context);
+        mcontext = context;
         Screen_w = display.getWidth();//获取屏幕的宽
         Screen_h = display.getHeight();///获取屏幕的高
         paint = new Paint();
@@ -93,6 +98,11 @@ public class MainGame extends View implements Runnable{
         this.thread.start();//线程开始
     }
     public void run() {
+        SoundPool soundPool;
+        HashMap musicId =new HashMap();
+        soundPool=new SoundPool(12, AudioManager.STREAM_MUSIC,5);
+        musicId.put(1,soundPool.load(mcontext,R.raw.pb,1));
+        musicId.put(2,soundPool.load(mcontext,R.raw.beffect,1));
         //飞机活动
         while ((!isLose)&&(!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
             background+=10;//背景移动
@@ -266,6 +276,7 @@ public class MainGame extends View implements Runnable{
                         if(doubleBullet>=1){
                             pb[id].visual = 1;
                             pb[id].x = plane.x + plane.width / 2+20;
+                            soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
                             pb[id].y = plane.y;
                             pb[id].v = 40;
                             if (id <= 48) {
@@ -275,6 +286,7 @@ public class MainGame extends View implements Runnable{
                             }
                             pb[id].visual = 1;
                             pb[id].x = plane.x + plane.width / 2-20;
+                            soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
                             pb[id].y = plane.y;
                             pb[id].v = 40;
                             if (id <= 48) {
@@ -285,6 +297,7 @@ public class MainGame extends View implements Runnable{
                             if(doubleBullet>=2) {
                                 pb[id].visual = 1;
                                 pb[id].x = plane.x + plane.width / 2;
+                                soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
                                 pb[id].y = plane.y;
                                 pb[id].v = 40;
                                 if (id <= 48) {
@@ -297,6 +310,7 @@ public class MainGame extends View implements Runnable{
                         if(doubleBullet==0) {
                             pb[id].visual = 1;
                             pb[id].x = plane.x + plane.width / 2;
+                            soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
                             pb[id].y = plane.y;
                             pb[id].v = 40;
                             if (id <= 48) {
@@ -435,6 +449,7 @@ public class MainGame extends View implements Runnable{
                                     boss.life-=3;
                                 }
                                 if(boss.life<=0){
+                                    soundPool.play((Integer) musicId.get(2),3,3, 0, 0, 1);
                                     isWin=true;
                                 }
                                 pb[i].visual = 0;

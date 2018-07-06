@@ -26,6 +26,9 @@
             </intent-filter>
 
         </service>
+        <service android:name="mainMusic">
+
+        </service>
     </application>
 
 </manifest>
