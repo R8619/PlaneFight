@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PlaneFight.iml" filepath="$PROJECT_DIR$/PlaneFight.iml" />
-      <module fileurl="file://E:\ASApplication\PlaneFight\PlaneFight\PlaneFight.iml" filepath="E:\ASApplication\PlaneFight\PlaneFight\PlaneFight.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://E:\ASApplication\PlaneFight\PlaneFight\app\app.iml" filepath="E:\ASApplication\PlaneFight\PlaneFight\app\app.iml" />
     </modules>
   </component>
 </project>

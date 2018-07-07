@@ -35,6 +35,7 @@ public class MainGame extends View implements Runnable{
     public int numOfStrenemy;
     public int i;
     public int j;
+    public int count;//记录杀敌数
     public int strBullet=0;
     public int doubleBullet=0;
     public int idOfTreasure;
@@ -50,6 +51,7 @@ public class MainGame extends View implements Runnable{
     Boss boss;
     Thread thread;
     Treasure[] treasure;
+    UniqueSkill[] uskill;
     PBullet[] pb;
     EBullet[] eb;
     BBullet[] bb;
@@ -67,9 +69,11 @@ public class MainGame extends View implements Runnable{
         idOfTreasure=0;
         numOfEnemy=0;
         numOfStrenemy=0;
+        count=0;
         plane=new Plane();//新建飞机
         pb=new PBullet[50];//新建子弹
         eb=new EBullet[160];
+        uskill=new UniqueSkill[50];//必杀技
         bb=new BBullet[160];
         enemy=new Enemy[50];//新建敌机
         strenemy=new Strenemy[50];
@@ -121,6 +125,7 @@ public class MainGame extends View implements Runnable{
                         enemy[ide].y = 0;
                         ide++;//敌机编号加1
                         numOfEnemy++;//敌机数目加1
+                        //count++;//记录数+1
                     } else if (ide > 0 && ide <= 39) {//可知敌机的数目只有39架，可以回头测试数目
                         if (enemy[ide - 1].y >= 300) {//如果上一架飞机Y轴的位置大于了300
                             enemy[ide].visual = 1;//出现新飞机，也就是说每300的Y轴出现一架飞机，飞机的间距是已经设置好的。
@@ -147,6 +152,7 @@ public class MainGame extends View implements Runnable{
                         strenemy[idse].y = 0;
                         idse++;//敌机编号加1
                         numOfStrenemy++;//敌机数目加1
+                       // count++;//记录杀敌数
                     } else if (idse > 0 && idse <= 39) {//可知敌机的数目只有39架，可以回头测试数目
                         if (strenemy[idse-1].y >= 250) {//如果上一架飞机Y轴的位置大于了400
                             strenemy[idse].visual = 1;//出现新飞机，也就是说每300的Y轴出现一架飞机，飞机的间距是已经设置好的。
@@ -200,6 +206,15 @@ public class MainGame extends View implements Runnable{
                     if(ideb==145){
                         ideb=1;
                     }
+                }
+            }
+            //产生必杀技
+            for (i=1;i<40;i++)
+            {
+                if (numOfEnemy+numOfStrenemy==20){
+                    uskill[ide].visual=1;
+                    uskill[ide].y=plane.y+plane.height;
+                    uskill[ide].x=plane.x+plane.width/2;
                 }
             }
             //产生BOSS
@@ -303,6 +318,17 @@ public class MainGame extends View implements Runnable{
                                 if (id <= 48) {
                                     id++;
                                 } else {
+                                    id = 0;
+                                }
+                            }
+                            if (numOfStrenemy+numOfEnemy==20){
+                                uskill[id].visual = 1;
+                                uskill[id].x = plane.x + plane.width / 2;
+                                pb[id].y = plane.y;
+                                if (id<=48){
+                                    id++;
+                                }
+                                else{
                                     id = 0;
                                 }
                             }
@@ -563,6 +589,7 @@ public class MainGame extends View implements Runnable{
     Bitmap TREA1 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)).getBitmap() : null;
     Bitmap TREA2 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)).getBitmap() : null;
     Bitmap TREA3 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)).getBitmap() : null;
+    Bitmap USKILL = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)).getBitmap() : null;
     protected void onDraw(Canvas canvas) {//绘图函数，就是动画的绘图了
         super.onDraw(canvas);
         paint.setColor(Color.WHITE);
@@ -666,6 +693,13 @@ public class MainGame extends View implements Runnable{
         for(i=1;i<=145;i++){
             if(eb[i].visual==1){
                 canvas.drawBitmap(EBULLET,null,new Rect(eb[i].x,eb[i].y,eb[i].x+eb[i].width,eb[i].y+eb[i].height),paint);
+            }
+        }
+        //画必杀技
+        for (i=0;i<=49;i++)
+        {
+            if (pb[i].visual==1){
+                canvas.drawBitmap(USKILL,null,new Rect(pb[j].x,pb[j].y,pb[i].x+uskill[i].width,pb[i].y+uskill[i].height),paint);
             }
         }
         //画BOSS
