@@ -2,6 +2,7 @@ package com.wlw2_11.planefight;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -21,6 +22,23 @@ import java.util.Random;
  */
 
 public class MainGame extends View implements Runnable{
+    private int missileCount; // 导弹的数量
+    private Bitmap missile_bt; // 导弹按钮图标
+    private Bitmap BBULLET;
+    private Bitmap EBULLET;
+    private Bitmap PBULLET;
+    private Bitmap BOSS;
+    private Bitmap ENEMY;
+    private Bitmap STRENEMY;
+    private Bitmap BOO;
+    private Bitmap BACK;
+    private Bitmap BACK1;
+    private Bitmap TREA1;
+    private Bitmap TREA2;
+    private Bitmap TREA3;
+   // private Bitmap Boss;
+    private float missile_bt_y;
+    long MISSILEBOOM_TIME = 500;// 我方导弹爆炸;
     public static int Screen_w;
     public static int Screen_h;
     public static Paint paint;
@@ -46,12 +64,14 @@ public class MainGame extends View implements Runnable{
     public int background1;
     public boolean isLose=false;
     public int score=0;
+    private Bitmap boom;//爆炸效果图
+    private boolean isMissileBoom; //导弹是否被引爆
     Random rand;
     Plane plane;
     Boss boss;
     Thread thread;
     Treasure[] treasure;
-    UniqueSkill[] uskill;
+    //UniqueSkill[] uskill;
     PBullet[] pb;
     EBullet[] eb;
     BBullet[] bb;
@@ -73,12 +93,13 @@ public class MainGame extends View implements Runnable{
         plane=new Plane();//新建飞机
         pb=new PBullet[50];//新建子弹
         eb=new EBullet[160];
-        uskill=new UniqueSkill[50];//必杀技
+        missileCount=5;
         bb=new BBullet[160];
         enemy=new Enemy[50];//新建敌机
         strenemy=new Strenemy[50];
         treasure=new Treasure[70];//新建宝物
         boss=new Boss();//新建Boss
+        initBitmap(); // 初始化图片资源
         for(i=0;i<=49;i++){
             pb[i]=new PBullet();
             enemy[i]=new Enemy();
@@ -101,7 +122,28 @@ public class MainGame extends View implements Runnable{
         this.thread = new Thread(this);//线程
         this.thread.start();//线程开始
     }
+
+    private void initBitmap() {
+        missile_bt = BitmapFactory.decodeResource(getResources(),
+                R.drawable.missile_bt);
+        boom = BitmapFactory.decodeResource(getResources(),R.drawable.boom);
+        BBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
+        EBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.eb);
+        PBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.pb);
+        BOSS = BitmapFactory.decodeResource(getResources(),R.drawable.boss);
+        ENEMY = BitmapFactory.decodeResource(getResources(),R.drawable.enemy);
+        STRENEMY = BitmapFactory.decodeResource(getResources(),R.drawable.strenemy);
+        BOO = BitmapFactory.decodeResource(getResources(),R.drawable.boo);
+        BACK = BitmapFactory.decodeResource(getResources(),R.drawable.back3);
+        BACK1 = BitmapFactory.decodeResource(getResources(),R.drawable.back);
+        TREA1 = BitmapFactory.decodeResource(getResources(),R.drawable.trea1);
+        TREA2 = BitmapFactory.decodeResource(getResources(),R.drawable.trea2);
+        TREA3 = BitmapFactory.decodeResource(getResources(),R.drawable.trea3);
+        missile_bt_y = Screen_h - 10 - missile_bt.getHeight();
+    }
+
     public void run() {
+        isMissileBoom = false;
         SoundPool soundPool;
         HashMap musicId =new HashMap();
         soundPool=new SoundPool(12, AudioManager.STREAM_MUSIC,5);
@@ -109,16 +151,16 @@ public class MainGame extends View implements Runnable{
         musicId.put(2,soundPool.load(mcontext,R.raw.beffect,1));
         //飞机活动
         while ((!isLose)&&(!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
-            background+=10;//背景移动
-            background1+=10;
-            if(background>=1184){
-                background=background1-1184;
-            }else if(background1>=1184){
-                background1=background-1184;
+            background += 10;//背景移动
+            background1 += 10;
+            if (background >= 1184) {
+                background = background1 - 1184;
+            } else if (background1 >= 1184) {
+                background1 = background - 1184;
             }
             //产生敌机
-            if(boss.visual==0){//如果BOSS不出现
-                if(enemy[ide].visual==0) {//如果不存在飞机
+            if (boss.visual == 0) {//如果BOSS不出现
+                if (enemy[ide].visual == 0) {//如果不存在飞机
                     //如果是第一个
                     if (ide == 1) {
                         enemy[ide].visual = 1;
@@ -135,26 +177,26 @@ public class MainGame extends View implements Runnable{
                         }
                     }
                 }
-                if(ide==40){
+                if (ide == 40) {
                     enemy[ide].visual = 1;
-                    enemy[ide].y=0;
-                    ide=1;
-                    enemy[ide].y=0;
+                    enemy[ide].y = 0;
+                    ide = 1;
+                    enemy[ide].y = 0;
                     numOfEnemy++;
                 }
             }
             //产生加强版敌机
-            if(boss.visual==0){//如果BOSS不出现
-                if(enemy[ide].visual==0) {
+            if (boss.visual == 0) {//如果BOSS不出现
+                if (enemy[ide].visual == 0) {
                     //如果是第一个
                     if (idse == 1) {
                         strenemy[idse].visual = 1;
                         strenemy[idse].y = 0;
                         idse++;//敌机编号加1
                         numOfStrenemy++;//敌机数目加1
-                       // count++;//记录杀敌数
+                        // count++;//记录杀敌数
                     } else if (idse > 0 && idse <= 39) {//可知敌机的数目只有39架，可以回头测试数目
-                        if (strenemy[idse-1].y >= 250) {//如果上一架飞机Y轴的位置大于了400
+                        if (strenemy[idse - 1].y >= 250) {//如果上一架飞机Y轴的位置大于了400
                             strenemy[idse].visual = 1;//出现新飞机，也就是说每300的Y轴出现一架飞机，飞机的间距是已经设置好的。
                             strenemy[idse].y = 0;//初始时Y轴的位置
                             idse++;//编号+1
@@ -162,53 +204,53 @@ public class MainGame extends View implements Runnable{
                         }
                     }
                 }
-                if(idse==40){
+                if (idse == 40) {
                     strenemy[idse].visual = 1;
-                    strenemy[idse].y=0;
-                    idse=1;
-                    strenemy[idse].y=0;
+                    strenemy[idse].y = 0;
+                    idse = 1;
+                    strenemy[idse].y = 0;
                     numOfStrenemy++;
                 }
             }
             //敌机移动
-            for(i=1;i<=40;i++) {
-                enemy[i].y+=enemy[i].v;
-                if(enemy[i].y>=Screen_h){
-                    enemy[i].visual=0;
+            for (i = 1; i <= 40; i++) {
+                enemy[i].y += enemy[i].v;
+                if (enemy[i].y >= Screen_h) {
+                    enemy[i].visual = 0;
                 }
-                if(enemy[i].visual==1) {
-                    enemy[i].x+=enemy[i].vx;
-                    if(enemy[i].x+enemy[i].width+enemy[i].vx>Screen_w || enemy[i].x<=50){
-                        enemy[i].vx=-enemy[i].vx;
+                if (enemy[i].visual == 1) {
+                    enemy[i].x += enemy[i].vx;
+                    if (enemy[i].x + enemy[i].width + enemy[i].vx > Screen_w || enemy[i].x <= 50) {
+                        enemy[i].vx = -enemy[i].vx;
                     }
                 }
             }
             //加强版敌机移动
-            for(i=1;i<=40;i++) {
+            for (i = 1; i <= 40; i++) {
                 strenemy[i].y += strenemy[i].v;
                 if (strenemy[i].y >= Screen_h) {
                     strenemy[i].visual = 0;//敌机消失
                 }
             }
             //敌机产生子弹
-            for(i=1;i<=40;i++){
-                if(enemy[i].visual==1){
-                    if(enemy[i].y>=100+i*40&&enemy[i].y<=110+i*40 && enemy[i].v>0){
+            for (i = 1; i <= 40; i++) {
+                if (enemy[i].visual == 1) {
+                    if (enemy[i].y >= 100 + i * 40 && enemy[i].y <= 110 + i * 40 && enemy[i].v > 0) {
                         eb[ideb].visual = 1;
-                        eb[ideb].y = enemy[i].y+enemy[i].height;
-                        eb[ideb].x = enemy[i].x+enemy[i].width/2 + 20;
+                        eb[ideb].y = enemy[i].y + enemy[i].height;
+                        eb[ideb].x = enemy[i].x + enemy[i].width / 2 + 20;
                         ideb++;
                         eb[ideb].visual = 1;
-                        eb[ideb].y = enemy[i].y+enemy[i].height;
-                        eb[ideb].x = enemy[i].x+enemy[i].width/2 - 20;
+                        eb[ideb].y = enemy[i].y + enemy[i].height;
+                        eb[ideb].x = enemy[i].x + enemy[i].width / 2 - 20;
                         ideb++;
                     }
-                    if(ideb==145){
-                        ideb=1;
+                    if (ideb == 145) {
+                        ideb = 1;
                     }
                 }
             }
-            //产生必杀技
+          /*  //产生必杀技
             for (i=1;i<40;i++)
             {
                 if (numOfEnemy+numOfStrenemy==20){
@@ -216,34 +258,34 @@ public class MainGame extends View implements Runnable{
                     uskill[ide].y=plane.y+plane.height;
                     uskill[ide].x=plane.x+plane.width/2;
                 }
-            }
+            }*/
             //产生BOSS
-            if(numOfEnemy==60){
-                boss.visual=2;
+            if (numOfEnemy == 60) {
+                boss.visual = 2;
             }
             //BOSS移动
-            if(boss.visual!=0){
-                boss.y+=boss.v;
-                if(boss.y>=100){
-                    boss.visual=1;
+            if (boss.visual != 0) {
+                boss.y += boss.v;
+                if (boss.y >= 100) {
+                    boss.visual = 1;
                 }
-                if(boss.visual==1) {
-                    boss.x+=boss.vx;
-                    if (boss.y >= 900 || boss.y+boss.v < 100) {
+                if (boss.visual == 1) {
+                    boss.x += boss.vx;
+                    if (boss.y >= 900 || boss.y + boss.v < 100) {
                         boss.v = -boss.v;
                     }
-                    if(boss.x+boss.width+boss.vx>Screen_w||boss.x<=50){
-                        boss.vx=-boss.vx;
+                    if (boss.x + boss.width + boss.vx > Screen_w || boss.x <= 50) {
+                        boss.vx = -boss.vx;
                     }
                 }
             }
             //产生BOSS子弹
-            if(boss.visual==1){
-                if(ideb>=140){
-                    ideb=1;
+            if (boss.visual == 1) {
+                if (ideb >= 140) {
+                    ideb = 1;
                 }
-                for(i=0;i<=10;i++) {
-                    if (boss.y >= 100+i*40 && boss.y <= 105+i*40&&boss.v>0) {
+                for (i = 0; i <= 10; i++) {
+                    if (boss.y >= 100 + i * 40 && boss.y <= 105 + i * 40 && boss.v > 0) {
                         bb[ideb].visual = 1;
                         bb[ideb].y = boss.y + boss.height / 2;
                         bb[ideb].x = boss.x + boss.width / 2 + 320;
@@ -253,7 +295,7 @@ public class MainGame extends View implements Runnable{
                         bb[ideb].x = boss.x + boss.width / 2 - 320;
                         ideb++;
                     }
-                    if(boss.y >= 140+i*40 && boss.y <= 145+i*40&&boss.v<0){
+                    if (boss.y >= 140 + i * 40 && boss.y <= 145 + i * 40 && boss.v < 0) {
                         bb[ideb].visual = 1;
                         bb[ideb].y = boss.y + boss.height / 2;
                         bb[ideb].x = boss.x + boss.width / 2 + 25;
@@ -266,32 +308,32 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //敌机子弹运动
-            for(i=1;i<=145;i++){
-                if(eb[i].visual==1){
-                    eb[i].y+=eb[i].v;
+            for (i = 1; i <= 145; i++) {
+                if (eb[i].visual == 1) {
+                    eb[i].y += eb[i].v;
                 }
-                if(eb[i].y>=Screen_h){
-                    eb[i].visual=0;
+                if (eb[i].y >= Screen_h) {
+                    eb[i].visual = 0;
                 }
             }
             //BOSS子弹移动
-            for(i=1;i<=145;i++){
-                if(bb[i].visual==1){
-                    bb[i].y+=bb[i].v;
+            for (i = 1; i <= 145; i++) {
+                if (bb[i].visual == 1) {
+                    bb[i].y += bb[i].v;
                 }
-                if(bb[i].y>=Screen_h){
-                    bb[i].visual=0;
+                if (bb[i].y >= Screen_h) {
+                    bb[i].visual = 0;
                 }
             }
             //按下之后
-            if(isdown==true) {
+            if (isdown == true) {
                 temp++;
-                if(temp==5){
-                    if(pb[id].visual==0) {
-                        if(doubleBullet>=1){
+                if (temp == 5) {
+                    if (pb[id].visual == 0) {
+                        if (doubleBullet >= 1) {
                             pb[id].visual = 1;
-                            pb[id].x = plane.x + plane.width / 2+20;
-                            soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
+                            pb[id].x = plane.x + plane.width / 2 + 20;
+                            soundPool.play((Integer) musicId.get(1), 1, 1, 0, 0, 1);
                             pb[id].y = plane.y;
                             pb[id].v = 40;
                             if (id <= 48) {
@@ -300,8 +342,8 @@ public class MainGame extends View implements Runnable{
                                 id = 0;
                             }
                             pb[id].visual = 1;
-                            pb[id].x = plane.x + plane.width / 2-20;
-                            soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
+                            pb[id].x = plane.x + plane.width / 2 - 20;
+                            soundPool.play((Integer) musicId.get(1), 1, 1, 0, 0, 1);
                             pb[id].y = plane.y;
                             pb[id].v = 40;
                             if (id <= 48) {
@@ -309,10 +351,10 @@ public class MainGame extends View implements Runnable{
                             } else {
                                 id = 0;
                             }
-                            if(doubleBullet>=2) {
+                            if (doubleBullet >= 2) {
                                 pb[id].visual = 1;
                                 pb[id].x = plane.x + plane.width / 2;
-                                soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
+                                soundPool.play((Integer) musicId.get(1), 1, 1, 0, 0, 1);
                                 pb[id].y = plane.y;
                                 pb[id].v = 40;
                                 if (id <= 48) {
@@ -321,7 +363,7 @@ public class MainGame extends View implements Runnable{
                                     id = 0;
                                 }
                             }
-                            if (numOfStrenemy+numOfEnemy==20){
+                            /*if (numOfStrenemy+numOfEnemy==20){
                                 uskill[id].visual = 1;
                                 uskill[id].x = plane.x + plane.width / 2;
                                 pb[id].y = plane.y;
@@ -331,12 +373,12 @@ public class MainGame extends View implements Runnable{
                                 else{
                                     id = 0;
                                 }
-                            }
+                            }*/
                         }
-                        if(doubleBullet==0) {
+                        if (doubleBullet == 0) {
                             pb[id].visual = 1;
                             pb[id].x = plane.x + plane.width / 2;
-                            soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
+                            soundPool.play((Integer) musicId.get(1), 1, 1, 0, 0, 1);
                             pb[id].y = plane.y;
                             pb[id].v = 40;
                             if (id <= 48) {
@@ -350,23 +392,46 @@ public class MainGame extends View implements Runnable{
                 }
                 //触摸移动飞机
                 if (Point_x >= plane.x + plane.width / 2) {
-                    plane.x += (Point_x-plane.x-plane.width / 2)/4;
+                    plane.x += (Point_x - plane.x - plane.width / 2) / 4;
                 } else {
-                    plane.x -= (-Point_x+plane.x+plane.width / 2)/4;
+                    plane.x -= (-Point_x + plane.x + plane.width / 2) / 4;
                 }
                 if (Point_y >= plane.y + plane.height / 2) {
-                    plane.y += (Point_y-plane.y-plane.height / 2)/4;
+                    plane.y += (Point_y - plane.y - plane.height / 2) / 4;
                 } else {
-                    plane.y -= (-Point_y+plane.y+plane.height / 2)/4;
+                    plane.y -= (-Point_y + plane.y + plane.height / 2) / 4;
                 }
                 //边界检测
-                if(plane.x<=0){//高度检测
-                    plane.x=0;
+                if (plane.x <= 0) {//高度检测
+                    plane.x = 0;
                 }
-                if(plane.x+plane.width>=Screen_w){//宽度检测
-                    plane.x=Screen_w-plane.width;
+                if (plane.x + plane.width >= Screen_w) {//宽度检测
+                    plane.x = Screen_w - plane.width;
+                }
+                //判断导弹是否按下
+                if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
+                        && Point_y < missile_bt_y + missile_bt.getHeight()){
+                if (missileCount > 0) {
+                    missileCount--;
+                    Plane.setMissileState(true);
+                    new Thread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(MISSILEBOOM_TIME);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            } finally {
+                                Plane.setMissileState(false);
+                            }
+
+                        }
+                    }).start();
                 }
             }
+
+
             //子弹移动
             for(i=0;i<=49;i++) {
                 if (pb[i].visual == 1) {
@@ -577,9 +642,9 @@ public class MainGame extends View implements Runnable{
         }
     }
     //下面是根据位图Bitmap把图片转换成了数据流
-    Bitmap BBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)).getBitmap() :null;//利用位图转换数据
+    /*Bitmap BBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)).getBitmap() :null;//利用位图转换数据
     Bitmap EBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.eb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.eb)).getBitmap() :null;
-    Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.pb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.pb)).getBitmap() :null;
+    Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)).getBitmap() :null;
     Bitmap BOSS = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boss)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boss)).getBitmap() :null;
     Bitmap ENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)).getBitmap() : null;
     Bitmap STRENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)).getBitmap() : null;
@@ -589,7 +654,10 @@ public class MainGame extends View implements Runnable{
     Bitmap TREA1 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)).getBitmap() : null;
     Bitmap TREA2 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)).getBitmap() : null;
     Bitmap TREA3 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)).getBitmap() : null;
-    Bitmap USKILL = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)).getBitmap() : null;
+   // missile_bt = BitmapFactory.decodeResource(getResources(),R.drawable.missile_bt);
+    //Bitmap missle_bt = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.missile_bt)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.missile_bt)).getBitmap() : null;
+    //boom = BitmapFactory.decodeResource(getResources(),R.drawable.boom);*/
+    //Bitmap boom = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boom)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boom)).getBitmap() : null;
     protected void onDraw(Canvas canvas) {//绘图函数，就是动画的绘图了
         super.onDraw(canvas);
         paint.setColor(Color.WHITE);
@@ -633,6 +701,14 @@ public class MainGame extends View implements Runnable{
                 canvas.drawBitmap(BOO,null,new Rect(pb[j].x-40,pb[j].y-40,pb[j].x + pb[j].width+40,pb[j].y + pb[j].height+40),paint);
                 pb[j].boo--;
             }
+        }
+        //画必杀技
+        if (plane.getMissileState()) {
+            float boom_x = Point_x- boom.getWidth() / 2;
+            float boom_y = Point_y - boom.getHeight() / 2;
+
+            canvas.drawBitmap(boom, boom_x, boom_y, paint);
+
         }
         //画宝物
         for(i=0;i<=65;i++){
@@ -696,12 +772,25 @@ public class MainGame extends View implements Runnable{
             }
         }
         //画必杀技
-        for (i=0;i<=49;i++)
-        {
-            if (pb[i].visual==1){
-                canvas.drawBitmap(USKILL,null,new Rect(pb[j].x,pb[j].y,pb[i].x+uskill[i].width,pb[i].y+uskill[i].height),paint);
+      /*  paint.setColor(Color.YELLOW);
+        for(j=0;j<=49;j++) {
+            if(pb[j].visual==1) {
+                if(strBullet==0){
+                    paint.setColor(Color.YELLOW);
+                }else{
+                    paint.setColor(Color.rgb(0, 255, 255));
+                }
+                canvas.drawBitmap(USKILL,null,new Rect(pb[j].x,pb[j].y,pb[j].x+pb[j].width,pb[j].y+pb[j].height),paint);
             }
-        }
+            if(pb[j].boo==2){
+                canvas.drawBitmap(BOO,null,new Rect(pb[j].x-20,pb[j].y-20,pb[j].x + pb[j].width+20,pb[j].y + pb[j].height+20),paint);
+                pb[j].boo--;
+            }
+            if(pb[j].boo==1){
+                canvas.drawBitmap(BOO,null,new Rect(pb[j].x-40,pb[j].y-40,pb[j].x + pb[j].width+40,pb[j].y + pb[j].height+40),paint);
+                pb[j].boo--;
+            }
+        }*/
         //画BOSS
         if(boss.visual!=0){
             if(boss.life>=4) {
