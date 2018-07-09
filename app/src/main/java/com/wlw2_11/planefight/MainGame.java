@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
@@ -145,12 +144,12 @@ public class MainGame extends View implements Runnable{
     public void run() {
         isMissileBoom = false;
         SoundPool soundPool;
-        HashMap musicId =new HashMap();
-        soundPool=new SoundPool(12, AudioManager.STREAM_MUSIC,5);
-        musicId.put(1,soundPool.load(mcontext,R.raw.pb,1));
-        musicId.put(2,soundPool.load(mcontext,R.raw.beffect,1));
+        HashMap musicId = new HashMap();
+        soundPool = new SoundPool(12, AudioManager.STREAM_MUSIC, 5);
+        musicId.put(1, soundPool.load(mcontext, R.raw.pb, 1));
+        musicId.put(2, soundPool.load(mcontext, R.raw.beffect, 1));
         //飞机活动
-        while ((!isLose)&&(!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
+        while ((!isLose) && (!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
             background += 10;//背景移动
             background1 += 10;
             if (background >= 1184) {
@@ -410,234 +409,235 @@ public class MainGame extends View implements Runnable{
                 }
                 //判断导弹是否按下
                 if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
-                        && Point_y < missile_bt_y + missile_bt.getHeight()){
-                if (missileCount > 0) {
-                    missileCount--;
-                    Plane.setMissileState(true);
-                    new Thread(new Runnable() {
+                        && Point_y < missile_bt_y + missile_bt.getHeight()) {
+                    if (missileCount > 0) {
+                        missileCount--;
+                        plane.setMissileState(true);
+                        new Thread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            try {
-                                Thread.sleep(MISSILEBOOM_TIME);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            } finally {
-                                Plane.setMissileState(false);
+                            @Override
+                            public void run() {
+                                try {
+                                    Thread.sleep(MISSILEBOOM_TIME);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                } finally {
+                                    plane.setMissileState(false);
+                                }
+
                             }
-
-                        }
-                    }).start();
-                }
-            }
-
-
-            //子弹移动
-            for(i=0;i<=49;i++) {
-                if (pb[i].visual == 1) {
-                    pb[i].y -= pb[i].v;
-                    if(pb[i].y<=30){//如果子弹超过边界
-                        pb[i].visual=0;
+                        }).start();
                     }
                 }
-            }
-            //与BOSS相撞
-            if(boss.visual==2) {
-                if (plane.x + plane.width - 10 >= boss.x && plane.x <= boss.x + boss.width) {
-                    if (plane.y <= boss.y + boss.height && plane.y + plane.height >= boss.y) {
-                        plane.life -= 5;
-                        boss.life -=5;
-                        if (plane.life <= 0) {
-                            isLose = true;
+
+
+                //子弹移动
+                for (i = 0; i <= 49; i++) {
+                    if (pb[i].visual == 1) {
+                        pb[i].y -= pb[i].v;
+                        if (pb[i].y <= 30) {//如果子弹超过边界
+                            pb[i].visual = 0;
                         }
                     }
                 }
-            }
-            //子弹打到敌机
-            for(i=0;i<=49;i++) {
-                for(j=1;j<=40;j++){
-                    if(pb[i].visual==1&&enemy[j].visual==1){//我方子弹和敌机存在
-                        if(pb[i].x>=enemy[j].x&&pb[i].x<=enemy[j].x+enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
-                            if (pb[i].y <= enemy[j].y + enemy[j].height&&pb[i].y>=enemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
-                                enemy[j].life-=2;
+                //与BOSS相撞
+                if (boss.visual == 2) {
+                    if (plane.x + plane.width - 10 >= boss.x && plane.x <= boss.x + boss.width) {
+                        if (plane.y <= boss.y + boss.height && plane.y + plane.height >= boss.y) {
+                            plane.life -= 5;
+                            boss.life -= 5;
+                            if (plane.life <= 0) {
+                                isLose = true;
+                            }
+                        }
+                    }
+                }
+                //子弹打到敌机
+                for (i = 0; i <= 49; i++) {
+                    for (j = 1; j <= 40; j++) {
+                        if (pb[i].visual == 1 && enemy[j].visual == 1) {//我方子弹和敌机存在
+                            if (pb[i].x >= enemy[j].x && pb[i].x <= enemy[j].x + enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
+                                if (pb[i].y <= enemy[j].y + enemy[j].height && pb[i].y >= enemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
+                                    enemy[j].life -= 2;
                                     enemy[j].visual = 0;//满足以上条件，敌机灭亡
                                     pb[i].visual = 0;// 子弹消失
-                                    enemy[j].boo=3;//爆炸
+                                    enemy[j].boo = 3;//爆炸
                                     numOfDestroy++;//击杀+1
                                     //产生宝物
-                                    if(enemy[j].treasure<=0){
-                                        treasure[idOfTreasure].visual=1;
-                                        treasure[idOfTreasure].x=enemy[j].x;//出现在敌机灭亡的X轴的位置上
-                                        treasure[idOfTreasure].y=enemy[j].y;//出现在敌机灭亡的Y轴的位置上
-                                        treasure[idOfTreasure].varible=1;//宝物的种类
+                                    if (enemy[j].treasure <= 0) {
+                                        treasure[idOfTreasure].visual = 1;
+                                        treasure[idOfTreasure].x = enemy[j].x;//出现在敌机灭亡的X轴的位置上
+                                        treasure[idOfTreasure].y = enemy[j].y;//出现在敌机灭亡的Y轴的位置上
+                                        treasure[idOfTreasure].varible = 1;//宝物的种类
                                         idOfTreasure++;
-                                    }else if(enemy[j].treasure<=2){
-                                        treasure[idOfTreasure].visual=1;
-                                        treasure[idOfTreasure].x=enemy[j].x;
-                                        treasure[idOfTreasure].y=enemy[j].y;
-                                        treasure[idOfTreasure].varible=2;
+                                    } else if (enemy[j].treasure <= 2) {
+                                        treasure[idOfTreasure].visual = 1;
+                                        treasure[idOfTreasure].x = enemy[j].x;
+                                        treasure[idOfTreasure].y = enemy[j].y;
+                                        treasure[idOfTreasure].varible = 2;
                                         idOfTreasure++;
-                                    }else if(enemy[j].treasure<=3){
-                                        treasure[idOfTreasure].visual=1;
-                                        treasure[idOfTreasure].x=enemy[j].x;
-                                        treasure[idOfTreasure].y=enemy[j].y;
-                                        treasure[idOfTreasure].varible=3;
+                                    } else if (enemy[j].treasure <= 3) {
+                                        treasure[idOfTreasure].visual = 1;
+                                        treasure[idOfTreasure].x = enemy[j].x;
+                                        treasure[idOfTreasure].y = enemy[j].y;
+                                        treasure[idOfTreasure].varible = 3;
                                         idOfTreasure++;
                                     }
+                                }
                             }
                         }
                     }
                 }
-            }
-            //子弹打到加强版敌机
-            for(i=0;i<=49;i++){
-                for(j=1;j<=40;j++){
-                    if(pb[i].visual==1 && strenemy[j].visual==1){
-                        if(pb[i].x>=strenemy[j].x&&pb[i].x<=strenemy[j].x+strenemy[j].width){
-                            if (pb[i].y <=strenemy[j].y + strenemy[j].height&&pb[i].y>=strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
-                                    strenemy[j].life-=2;
+                //子弹打到加强版敌机
+                for (i = 0; i <= 49; i++) {
+                    for (j = 1; j <= 40; j++) {
+                        if (pb[i].visual == 1 && strenemy[j].visual == 1) {
+                            if (pb[i].x >= strenemy[j].x && pb[i].x <= strenemy[j].x + strenemy[j].width) {
+                                if (pb[i].y <= strenemy[j].y + strenemy[j].height && pb[i].y >= strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
+                                    strenemy[j].life -= 2;
                                     strenemy[j].visual = 0;
                                     pb[i].visual = 0;
                                     strenemy[j].boo = 3;
                                     numOfDestroy++;
 
+                                }
                             }
                         }
                     }
-                }
 
-            }
-            //宝物移动
-            for(i=0;i<=65;i++){
-                if(treasure[i].visual==1) {
-                    treasure[i].y+=treasure[i].v;//Y轴移动
-                    //吃到宝物
-                    if(treasure[i].x+treasure[i].width>=plane.x&&treasure[i].x<=plane.x+plane.width){
-                        if(treasure[i].y+treasure[i].height>=plane.y&&treasure[i].y<=plane.y+plane.height){
-                            treasure[i].visual=0;
-                            if(treasure[i].varible==1){
-                                strBullet=1;
-                            }
-                            if(treasure[i].varible==2){
-                                doubleBullet++;
-                            }
-                            if(treasure[i].varible==3){
-                                plane.life+=4;
-                            }
-                        }
-                    }
                 }
-            }
-            //子弹打到BOSS
-            if(boss.visual!=0&&(boss.life>=4)) {
-                for (i = 0; i <= 49; i++) {
-                    if(pb[i].visual==1){
-                        if(pb[i].x>=boss.x&&pb[i].x<=boss.x+boss.width) {
-                            if (pb[i].y <= boss.y + boss.height && pb[i].y >= boss.y) {
-                                if(strBullet==0) {
-                                    boss.life-=2;
-                                }else{
-                                    boss.life-=3;
+                //宝物移动
+                for (i = 0; i <= 65; i++) {
+                    if (treasure[i].visual == 1) {
+                        treasure[i].y += treasure[i].v;//Y轴移动
+                        //吃到宝物
+                        if (treasure[i].x + treasure[i].width >= plane.x && treasure[i].x <= plane.x + plane.width) {
+                            if (treasure[i].y + treasure[i].height >= plane.y && treasure[i].y <= plane.y + plane.height) {
+                                treasure[i].visual = 0;
+                                if (treasure[i].varible == 1) {
+                                    strBullet = 1;
                                 }
-                                if(boss.life<=0){
-                                    soundPool.play((Integer) musicId.get(2),3,3, 0, 0, 1);
-                                    isWin=true;
+                                if (treasure[i].varible == 2) {
+                                    doubleBullet++;
                                 }
-                                pb[i].visual = 0;
-                                pb[i].boo=2;
+                                if (treasure[i].varible == 3) {
+                                    plane.life += 4;
+                                }
                             }
                         }
                     }
                 }
-            }
-            //通关条件
-            if(boss.life<=0){
-                isWin=true;
-                boss.life=0;
-            }
-            //游戏结束
-            if(plane.life <= 0){
-                isLose=true;
-                plane.life=0;
-            }
-            //飞机中敌机子弹
-            for(i=1;i<=145;i++){
-                if(eb[i].visual==1){
-                    if(eb[i].x-5>=plane.x&&eb[i].x+5<=plane.x+plane.width){
-                        if (eb[i].y-5>=plane.y&&eb[i].y+5<=plane.y+plane.height){
-                            plane.life-=2;
-                            {//掉血后重置子弹
-                                strBullet=0;
-                                doubleBullet=0;
-                            }
-                            eb[i].visual=0;
-                            eb[i].boo=2;
-                            if(plane.life<=0){
-                                isLose=true;
-                                plane.life=0;
+                //子弹打到BOSS
+                if (boss.visual != 0 && (boss.life >= 4)) {
+                    for (i = 0; i <= 49; i++) {
+                        if (pb[i].visual == 1) {
+                            if (pb[i].x >= boss.x && pb[i].x <= boss.x + boss.width) {
+                                if (pb[i].y <= boss.y + boss.height && pb[i].y >= boss.y) {
+                                    if (strBullet == 0) {
+                                        boss.life -= 2;
+                                    } else {
+                                        boss.life -= 3;
+                                    }
+                                    if (boss.life <= 0) {
+                                        soundPool.play((Integer) musicId.get(2), 3, 3, 0, 0, 1);
+                                        isWin = true;
+                                    }
+                                    pb[i].visual = 0;
+                                    pb[i].boo = 2;
+                                }
                             }
                         }
                     }
                 }
-            }
-            //飞机中BOSS子弹
-            for(i=1;i<=145;i++){
-                if(bb[i].visual==1){
-                    if(bb[i].x-5>=plane.x&&bb[i].x+5<=plane.x+plane.width){
-                        if (bb[i].y-5>=plane.y&&bb[i].y+5<=plane.y+plane.height){
-                            plane.life-=2;
-                            {//死亡后重置子弹
-                                strBullet=0;
-                                doubleBullet=0;
-                            }
-                            bb[i].visual=0;
-                            bb[i].boo=2;
-                            if(plane.life <= 0){
-                                isLose=true;
-                                plane.life=0;
+                //通关条件
+                if (boss.life <= 0) {
+                    isWin = true;
+                    boss.life = 0;
+                }
+                //游戏结束
+                if (plane.life <= 0) {
+                    isLose = true;
+                    plane.life = 0;
+                }
+                //飞机中敌机子弹
+                for (i = 1; i <= 145; i++) {
+                    if (eb[i].visual == 1) {
+                        if (eb[i].x - 5 >= plane.x && eb[i].x + 5 <= plane.x + plane.width) {
+                            if (eb[i].y - 5 >= plane.y && eb[i].y + 5 <= plane.y + plane.height) {
+                                plane.life -= 2;
+                                {//掉血后重置子弹
+                                    strBullet = 0;
+                                    doubleBullet = 0;
+                                }
+                                eb[i].visual = 0;
+                                eb[i].boo = 2;
+                                if (plane.life <= 0) {
+                                    isLose = true;
+                                    plane.life = 0;
+                                }
                             }
                         }
                     }
                 }
-            }
-            //飞机相撞
-            for(j=1;j<=40;j++){
-                if(enemy[j].visual==1) {
-                    if (enemy[j].x+enemy[j].width-5>= plane.x && enemy[j].x+5<= plane.x + plane.width) {
-                        if(enemy[j].y+enemy[j].height>= plane.y&&enemy[j].y<=plane.y+plane.height) {
-                            plane.life -= 2;
-                            enemy[j].life = 0;
-                            enemy[j].visual=0;
-                            enemy[j].boo=2;
-                            numOfDestroy++;
-                            if(plane.life <= 0) {
+                //飞机中BOSS子弹
+                for (i = 1; i <= 145; i++) {
+                    if (bb[i].visual == 1) {
+                        if (bb[i].x - 5 >= plane.x && bb[i].x + 5 <= plane.x + plane.width) {
+                            if (bb[i].y - 5 >= plane.y && bb[i].y + 5 <= plane.y + plane.height) {
+                                plane.life -= 2;
+                                {//死亡后重置子弹
+                                    strBullet = 0;
+                                    doubleBullet = 0;
+                                }
+                                bb[i].visual = 0;
+                                bb[i].boo = 2;
+                                if (plane.life <= 0) {
+                                    isLose = true;
+                                    plane.life = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                //飞机相撞
+                for (j = 1; j <= 40; j++) {
+                    if (enemy[j].visual == 1) {
+                        if (enemy[j].x + enemy[j].width - 5 >= plane.x && enemy[j].x + 5 <= plane.x + plane.width) {
+                            if (enemy[j].y + enemy[j].height >= plane.y && enemy[j].y <= plane.y + plane.height) {
+                                plane.life -= 2;
+                                enemy[j].life = 0;
+                                enemy[j].visual = 0;
+                                enemy[j].boo = 2;
+                                numOfDestroy++;
+                                if (plane.life <= 0) {
+                                    isLose = true;
+                                    plane.life = 0;
+                                }
+                            }
+                        }
+                    }
+                }
+                //与加强版飞机相撞
+                for (j = 1; j <= 40; j++) {
+                    if (strenemy[j].visual == 1) {
+                        if (strenemy[j].x + strenemy[j].width - 5 >= plane.x && strenemy[j].x + 5 <= plane.x + plane.width) {
+                            if (strenemy[j].y + strenemy[j].height >= plane.y && strenemy[j].y <= plane.y + plane.height) {
                                 isLose = true;
                                 plane.life = 0;
+                                strenemy[j].life = 0;
+                                strenemy[j].visual = 0;
+                                strenemy[j].boo = 2;
+                                numOfDestroy++;
                             }
                         }
                     }
                 }
-            }
-            //与加强版飞机相撞
-            for(j=1;j<=40;j++){
-                if(strenemy[j].visual==1) {
-                    if (strenemy[j].x+strenemy[j].width-5>= plane.x && strenemy[j].x+5<= plane.x + plane.width) {
-                        if(strenemy[j].y+strenemy[j].height>= plane.y&&strenemy[j].y<=plane.y+plane.height) {
-                            isLose = true;
-                            plane.life=0;
-                            strenemy[j].life = 0;
-                            strenemy[j].visual = 0;
-                            strenemy[j].boo = 2;
-                            numOfDestroy++;
-                        }
-                    }
+                this.postInvalidate();
+                try {
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            }
-            this.postInvalidate();
-            try {
-                Thread.sleep(50);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
         }
     }
