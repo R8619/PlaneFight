@@ -1,8 +1,22 @@
 package com.wlw2_11.planefight;
 
-/**
- * Created by 10716 on 2018/7/9.
- */
+import android.content.res.Resources;
+import android.graphics.BitmapFactory;
 
-public class MissileGoods {
+
+
+/**
+ * 导弹物品
+ */
+public class MissileGoods extends GameGoods {
+    public MissileGoods(Resources resources) {
+        super(resources);
+    }
+
+    @Override
+    protected void initBitmap() {
+        bmp = BitmapFactory.decodeResource(resources,R.drawable.missile_goods);
+        object_width = bmp.getWidth();
+        object_height = bmp.getHeight();
+    }
 }

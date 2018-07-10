@@ -23,7 +23,8 @@ import java.util.Random;
 public class MainGame extends View implements Runnable{
     private int missileCount; // 导弹的数量
     private Bitmap missile_bt; // 导弹按钮图标
-    private Bitmap BBULLET;
+    private MissileGoods missileGoods;
+    /*private Bitmap BBULLET;
     private Bitmap EBULLET;
     private Bitmap PBULLET;
     private Bitmap BOSS;
@@ -34,8 +35,13 @@ public class MainGame extends View implements Runnable{
     private Bitmap BACK1;
     private Bitmap TREA1;
     private Bitmap TREA2;
-    private Bitmap TREA3;
+    private Bitmap TREA3;*/
    // private Bitmap Boss;
+    private float bg_y; // 图片的坐标
+    private float bg_y2;
+    private float play_bt_w;
+    private float play_bt_h;
+    private boolean isPlay; // 标记游戏运行状态
     private float missile_bt_y;
     long MISSILEBOOM_TIME = 500;// 我方导弹爆炸;
     public static int Screen_w;
@@ -126,7 +132,7 @@ public class MainGame extends View implements Runnable{
         missile_bt = BitmapFactory.decodeResource(getResources(),
                 R.drawable.missile_bt);
         boom = BitmapFactory.decodeResource(getResources(),R.drawable.boom);
-        BBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
+ /*       BBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
         EBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.eb);
         PBULLET = BitmapFactory.decodeResource(getResources(),R.drawable.pb);
         BOSS = BitmapFactory.decodeResource(getResources(),R.drawable.boss);
@@ -137,7 +143,9 @@ public class MainGame extends View implements Runnable{
         BACK1 = BitmapFactory.decodeResource(getResources(),R.drawable.back);
         TREA1 = BitmapFactory.decodeResource(getResources(),R.drawable.trea1);
         TREA2 = BitmapFactory.decodeResource(getResources(),R.drawable.trea2);
-        TREA3 = BitmapFactory.decodeResource(getResources(),R.drawable.trea3);
+        TREA3 = BitmapFactory.decodeResource(getResources(),R.drawable.trea3);*/
+        bg_y = 0;
+        bg_y2 = bg_y -Screen_h;
         missile_bt_y = Screen_h - 10 - missile_bt.getHeight();
     }
 
@@ -408,7 +416,7 @@ public class MainGame extends View implements Runnable{
                     plane.x = Screen_w - plane.width;
                 }
                 //判断导弹是否按下
-                if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
+               else if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
                         && Point_y < missile_bt_y + missile_bt.getHeight()) {
                     if (missileCount > 0) {
                         missileCount--;
@@ -642,9 +650,9 @@ public class MainGame extends View implements Runnable{
         }
     }
     //下面是根据位图Bitmap把图片转换成了数据流
-    /*Bitmap BBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)).getBitmap() :null;//利用位图转换数据
+    Bitmap BBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)).getBitmap() :null;//利用位图转换数据
     Bitmap EBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.eb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.eb)).getBitmap() :null;
-    Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.uskill)).getBitmap() :null;
+    Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.pb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.pb)).getBitmap() :null;
     Bitmap BOSS = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boss)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boss)).getBitmap() :null;
     Bitmap ENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)).getBitmap() : null;
     Bitmap STRENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)).getBitmap() : null;
@@ -656,7 +664,7 @@ public class MainGame extends View implements Runnable{
     Bitmap TREA3 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)).getBitmap() : null;
    // missile_bt = BitmapFactory.decodeResource(getResources(),R.drawable.missile_bt);
     //Bitmap missle_bt = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.missile_bt)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.missile_bt)).getBitmap() : null;
-    //boom = BitmapFactory.decodeResource(getResources(),R.drawable.boom);*/
+    //boom = BitmapFactory.decodeResource(getResources(),R.drawable.boom);
     //Bitmap boom = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boom)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boom)).getBitmap() : null;
     protected void onDraw(Canvas canvas) {//绘图函数，就是动画的绘图了
         super.onDraw(canvas);
@@ -702,6 +710,16 @@ public class MainGame extends View implements Runnable{
                 pb[j].boo--;
             }
         }
+        // 绘制导弹按钮
+        if (missileCount > 0) {
+            paint.setTextSize(40);
+            paint.setColor(Color.BLACK);
+            canvas.drawBitmap(missile_bt, 10, missile_bt_y, paint);
+            canvas.drawText("X " + String.valueOf(missileCount),
+                    10 + missile_bt.getWidth(), Screen_h - 25, paint);// 绘制文字
+        }
+
+
         //画必杀技
         if (plane.getMissileState()) {
             float boom_x = Point_x- boom.getWidth() / 2;
