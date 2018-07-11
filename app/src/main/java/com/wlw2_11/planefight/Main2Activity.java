@@ -1,21 +1,16 @@
 package com.wlw2_11.planefight;
 
-import android.app.Service;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
-import android.app.Activity;
-import android.graphics.Color;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-public class MainActivity extends Activity {
 
-   // bindService(intent,coon,Service.BIND_AUTO_CREATE)
-     //Intent intent = new Intent(MainActivity.this, MusicServer.class);
-    //private Intent intent = new Intent("com.angel.Android.MUSIC");
+public class Main2Activity extends AppCompatActivity {
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,8 +23,8 @@ public class MainActivity extends Activity {
     public void Init() {
         WindowManager wm = this.getWindowManager();//屏幕管理器
         Display display = wm.getDefaultDisplay();//获取默认的屏幕
-        MainGame gameView = new MainGame(this, display);//创建一个游戏视图
-        gameView.setOnTouchListener(new touch());//新建一个游戏触摸视图
+        MainGame2 gameView = new MainGame2(this, display);//创建一个游戏视图
+        gameView.setOnTouchListener(new touch2());//新建一个游戏触摸视图
         this.setContentView(gameView);
     }
 
@@ -40,24 +35,17 @@ public class MainActivity extends Activity {
         stopService(intent);
     }
 }
-class touch implements View.OnTouchListener{//触摸监听事件
+class touch2 implements View.OnTouchListener{//触摸监听事件
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
-            MainGame.isdown=true;
+            MainGame2.isdown=true;
         }
         if(event.getAction()==MotionEvent.ACTION_UP){
-            MainGame.isdown=false;
+            MainGame2.isdown=false;
         }
-        MainGame.Point_x = (int) event.getRawX();
-        MainGame.Point_y = (int) event.getRawY();
+        MainGame2.Point_x = (int) event.getRawX();
+        MainGame2.Point_y = (int) event.getRawY();
         return true;
     }
-
-
-
-    /*protected void onDestroy() {
-
-        final Intent intent = new Intent(this,MusicServer.class);
-    }*/
 
 }

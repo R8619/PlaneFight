@@ -1,31 +1,40 @@
 package com.wlw2_11.planefight;
 
 import android.content.Intent;
-import android.media.AudioManager;
-import android.media.SoundPool;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import java.util.HashMap;
-
 public class SecondActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final SoundPool soundPool =new SoundPool(3 , AudioManager.STREAM_MUSIC
-                ,5);
-        final HashMap musicId = new HashMap();
-        musicId.put(1,soundPool.load(this,R.raw.beffect,1));
-        final Intent intent = new Intent(this,mainMusic.class);
-        startService(intent);
         Button button=(Button)findViewById(R.id.button);//选择不同的按钮
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    soundPool.play((Integer) musicId.get(1),1,1, 0, 0, 1);
-                    Intent intent=new Intent(SecondActivity.this,MainActivity.class);
+                    Intent intent=new Intent(SecondActivity.this,SelectActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        Button button2=(Button)findViewById(R.id.button2);//选择不同的按钮
+        if (button2 != null) {
+            button2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent=new Intent(SecondActivity.this,SettingsActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
+
+        Button button3=(Button)findViewById(R.id.button3);//选择不同的按钮
+        if (button3 != null) {
+            button3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                    Intent intent=new Intent(SecondActivity.this,HelpActivity.class);
                     startActivity(intent);
                 }
             });
@@ -40,12 +49,5 @@ public class SecondActivity extends AppCompatActivity {
                 }
             });
         }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Intent intent =new Intent(this,mainMusic.class);
-        stopService(intent);
     }
 }

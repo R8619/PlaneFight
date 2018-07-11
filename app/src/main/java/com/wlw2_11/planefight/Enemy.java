@@ -6,7 +6,7 @@ import java.util.Random;
  * Created by 任建康 on 2018/6/17.
  */
 
-public class Enemy {
+public class Enemy extends EBullet{
     public int x;
     public int y;
     public int width;
@@ -29,5 +29,10 @@ public class Enemy {
         x=random.nextInt(900);//x轴随机
         boo=0;
         treasure=random.nextInt(20);//随机出现宝物
+    }
+    public void boom_death(){
+        visual=0;
+        boo=1;
+        super.visual=0;
     }
 }

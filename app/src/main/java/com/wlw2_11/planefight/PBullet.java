@@ -13,8 +13,8 @@ public class PBullet {
     public int visual;
     public int boo;
     public PBullet(){
-        width=50;
-        height=1142;
+        width=10;
+        height=42;
         visual=0;//此处的THIS是不是会影响它子弹的种类
         boo=0;
     }

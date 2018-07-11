@@ -2,30 +2,21 @@ package com.wlw2_11.planefight;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
 import java.util.Random;
 
 /**
- * Created by 任建康 on 2018/6/17.
+ * Created by 任建康 on 2018/7/9.
  */
 
-public class MainGame extends View implements Runnable{
-    private int missileCount; // 导弹的数量
-    private Bitmap missile_bt; // 导弹按钮图标
-    private float bg_y; // 图片的坐标
-    private float missile_bt_y;
-    private boolean boom_state = false;
-    long MISSILEBOOM_TIME = 500;// 我方导弹爆炸;
-    private Bitmap boom;//爆炸效果图
+public class MainGame2 extends View implements Runnable {
     public static int Screen_w;
     public static int Screen_h;
     public static Paint paint;
@@ -60,9 +51,8 @@ public class MainGame extends View implements Runnable{
     BBullet[] bb;
     Enemy[] enemy;
     Strenemy[] strenemy;
-    public MainGame(Context context, Display display) {//初始化
+    public MainGame2(Context context, Display display) {//初始化
         super(context);
-        missileCount=5;
         Screen_w = display.getWidth();//获取屏幕的宽
         Screen_h = display.getHeight();///获取屏幕的高
         paint = new Paint();
@@ -96,9 +86,6 @@ public class MainGame extends View implements Runnable{
         for(int i=0;i<=149;i++){//*********Boss子弹的总数只有150颗
             bb[i] = new BBullet();
         }
-        missile_bt = BitmapFactory.decodeResource(getResources(), R.drawable.missile_bt);
-        boom = BitmapFactory.decodeResource(getResources(),R.drawable.boom);
-        missile_bt_y = Screen_h - 10 - missile_bt.getHeight();
         rand=new Random();
         background=0;
         this.thread = new Thread(this);//线程
@@ -320,70 +307,24 @@ public class MainGame extends View implements Runnable{
                         temp = 1;
                     }
                 }
-                //按下导弹
-                if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
-                        && Point_y < missile_bt_y + missile_bt.getHeight()+5) {
-                    if (missileCount > 0) {
-                        //missileCount--;
-                        plane.setMissileState(true);
-
-                        for (int j=0;j<40;j++){              //循环40个普通敌机
-                            if(enemy[j].visual==1&& 0<enemy[j].x&&enemy[j].x<Screen_w&&0<enemy[j].y&&enemy[j].y<Screen_h){      //敌机存在并 判读敌机位置
-                                enemy[j].life-=2;
-                                enemy[j].visual = 0;//满足以上条件，敌机灭亡
-                                enemy[j].boo=3;//爆炸
-                                numOfDestroy++;//击杀+1
-                            }
-                        }
-                        for (int j=0;j<40;j++){              //循环40个普通敌机
-                            if(strenemy[j].visual==1&& 0<strenemy[j].x&&strenemy[j].x<Screen_w&&0<strenemy[j].y&&strenemy[j].y<Screen_h){      //敌机存在并 判读敌机位置
-                                strenemy[j].life-=2;
-                                strenemy[j].visual = 0;//满足以上条件，敌机灭亡
-                                strenemy[j].boo=3;//爆炸
-                                numOfDestroy++;//击杀+1
-                            }
-                        }
-
-                        new Thread(new Runnable() {
-
-                            @Override
-                            public void run() {
-                                try {
-                                    Thread.sleep(MISSILEBOOM_TIME);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                } finally {
-                                    plane.setMissileState(false);
-                                }
-
-                            }
-                        }).start();
-                    }
-                }
-
                 //触摸移动飞机
-                else {
-
-                    //触摸移动飞机
-                    if (Point_x >= plane.x + plane.width / 2) {
-                        plane.x += (Point_x-plane.x-plane.width / 2)/4;
-                    } else {
-                        plane.x -= (-Point_x+plane.x+plane.width / 2)/4;
-                    }
-                    if (Point_y >= plane.y + plane.height / 2) {
-                        plane.y += (Point_y-plane.y-plane.height / 2)/4;
-                    } else {
-                        plane.y -= (-Point_y+plane.y+plane.height / 2)/4;
-                    }
-                    //边界检测
-                    if(plane.x<=0){//高度检测
-                        plane.x=0;
-                    }
-                    if(plane.x+plane.width>=Screen_w){//宽度检测
-                        plane.x=Screen_w-plane.width;
-                    }
+                if (Point_x >= plane.x + plane.width / 2) {
+                    plane.x += (Point_x-plane.x-plane.width / 2)/4;
+                } else {
+                    plane.x -= (-Point_x+plane.x+plane.width / 2)/4;
                 }
-
+                if (Point_y >= plane.y + plane.height / 2) {
+                    plane.y += (Point_y-plane.y-plane.height / 2)/4;
+                } else {
+                    plane.y -= (-Point_y+plane.y+plane.height / 2)/4;
+                }
+                //边界检测
+                if(plane.x<=0){//高度检测
+                    plane.x=0;
+                }
+                if(plane.x+plane.width>=Screen_w){//宽度检测
+                    plane.x=Screen_w-plane.width;
+                }
             }
             //子弹移动
             for(i=0;i<=49;i++) {
@@ -409,63 +350,50 @@ public class MainGame extends View implements Runnable{
             //子弹打到敌机
             for(i=0;i<=49;i++) {
                 for(j=1;j<=40;j++){
-                    //if (enemy[j]=1&&plane.getMissileState())
                     if(pb[i].visual==1&&enemy[j].visual==1){//我方子弹和敌机存在
                         if(pb[i].x>=enemy[j].x&&pb[i].x<=enemy[j].x+enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
                             if (pb[i].y <= enemy[j].y + enemy[j].height&&pb[i].y>=enemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
                                 enemy[j].life-=2;
-                                    enemy[j].visual = 0;//满足以上条件，敌机灭亡
-                                    pb[i].visual = 0;// 子弹消失
-                                    enemy[j].boo=3;//爆炸
-                                    numOfDestroy++;//击杀+1
-                                    //产生宝物
-                                    if(enemy[j].treasure<=0){
-                                        treasure[idOfTreasure].visual=1;
-                                        treasure[idOfTreasure].x=enemy[j].x;//出现在敌机灭亡的X轴的位置上
-                                        treasure[idOfTreasure].y=enemy[j].y;//出现在敌机灭亡的Y轴的位置上
-                                        treasure[idOfTreasure].varible=1;//宝物的种类
-                                        idOfTreasure++;
-                                    }else if(enemy[j].treasure<=2){
-                                        treasure[idOfTreasure].visual=1;
-                                        treasure[idOfTreasure].x=enemy[j].x;
-                                        treasure[idOfTreasure].y=enemy[j].y;
-                                        treasure[idOfTreasure].varible=2;
-                                        idOfTreasure++;
-                                    }else if(enemy[j].treasure<=3){
-                                        treasure[idOfTreasure].visual=1;
-                                        treasure[idOfTreasure].x=enemy[j].x;
-                                        treasure[idOfTreasure].y=enemy[j].y;
-                                        treasure[idOfTreasure].varible=3;
-                                        idOfTreasure++;
-                                    }
+                                enemy[j].visual = 0;//满足以上条件，敌机灭亡
+                                pb[i].visual = 0;// 子弹消失
+                                enemy[j].boo=3;//爆炸
+                                numOfDestroy++;//击杀+1
+                                //产生宝物
+                                if(enemy[j].treasure<=0){
+                                    treasure[idOfTreasure].visual=1;
+                                    treasure[idOfTreasure].x=enemy[j].x;//出现在敌机灭亡的X轴的位置上
+                                    treasure[idOfTreasure].y=enemy[j].y;//出现在敌机灭亡的Y轴的位置上
+                                    treasure[idOfTreasure].varible=1;//宝物的种类
+                                    idOfTreasure++;
+                                }else if(enemy[j].treasure<=2){
+                                    treasure[idOfTreasure].visual=1;
+                                    treasure[idOfTreasure].x=enemy[j].x;
+                                    treasure[idOfTreasure].y=enemy[j].y;
+                                    treasure[idOfTreasure].varible=2;
+                                    idOfTreasure++;
+                                }else if(enemy[j].treasure<=3){
+                                    treasure[idOfTreasure].visual=1;
+                                    treasure[idOfTreasure].x=enemy[j].x;
+                                    treasure[idOfTreasure].y=enemy[j].y;
+                                    treasure[idOfTreasure].varible=3;
+                                    idOfTreasure++;
+                                }
                             }
                         }
                     }
                 }
             }
-          /*  //全屏死
-            for (i=1;i<49;i++){
-                for (j=1;j<=40;j++){
-                    if (boom_state==true){
-                        strenemy[j].visual=0;
-                        enemy[j].visual=0;
-                        enemy[j].boo=2;
-                        strenemy[j].boo=2;
-                        boom_state=false;
-                    }
-                }
-            }*/
             //子弹打到加强版敌机
             for(i=0;i<=49;i++){
                 for(j=1;j<=40;j++){
                     if(pb[i].visual==1 && strenemy[j].visual==1){
                         if(pb[i].x>=strenemy[j].x&&pb[i].x<=strenemy[j].x+strenemy[j].width){
                             if (pb[i].y <=strenemy[j].y + strenemy[j].height&&pb[i].y>=strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
-                                    strenemy[j].life-=2;
-                                    strenemy[j].visual = 0;
-                                    pb[i].visual = 0;
-                                    strenemy[j].boo = 3;
-                                    numOfDestroy++;
+                                strenemy[j].life-=2;
+                                strenemy[j].visual = 0;
+                                pb[i].visual = 0;
+                                strenemy[j].boo = 3;
+                                numOfDestroy++;
 
                             }
                         }
@@ -637,21 +565,6 @@ public class MainGame extends View implements Runnable{
             paint.setTextSize(40);
             canvas.drawText("BH:", 0, Screen_h - 1700, paint);
             canvas.drawRect(80, Screen_h - 1750, 80 + boss.life * 5, Screen_h - 1700, paint);
-        }
-        // 绘制导弹按钮
-        if (missileCount > 0) {
-            paint.setTextSize(40);
-            paint.setColor(Color.BLACK);
-            canvas.drawBitmap(missile_bt, 10, missile_bt_y, paint);
-            canvas.drawText("X " + String.valueOf(missileCount),
-                    10 + missile_bt.getWidth(), Screen_h - 25, paint);// 绘制文字
-        }
-        //画必杀技
-        if (plane.getMissileState()) {
-            float boom_x = plane.x- boom.getWidth() / 2+plane.width/2;
-            float boom_y = plane.y - boom.getHeight() / 2+plane.height/2;
-            canvas.drawBitmap(boom, boom_x, boom_y, paint);
-
         }
         //画己方飞机
         if (((BitmapDrawable) this.getResources().getDrawable(R.drawable.plane)) != null) {
