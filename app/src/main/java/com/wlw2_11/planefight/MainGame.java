@@ -397,26 +397,7 @@ public class MainGame extends View implements Runnable{
                         temp = 1;
                     }
                 }
-                //触摸移动飞机
-                if (Point_x >= plane.x + plane.width / 2) {
-                    plane.x += (Point_x - plane.x - plane.width / 2) / 4;
-                } else {
-                    plane.x -= (-Point_x + plane.x + plane.width / 2) / 4;
-                }
-                if (Point_y >= plane.y + plane.height / 2) {
-                    plane.y += (Point_y - plane.y - plane.height / 2) / 4;
-                } else {
-                    plane.y -= (-Point_y + plane.y + plane.height / 2) / 4;
-                }
-                //边界检测
-                if (plane.x <= 0) {//高度检测
-                    plane.x = 0;
-                }
-                if (plane.x + plane.width >= Screen_w) {//宽度检测
-                    plane.x = Screen_w - plane.width;
-                }
-                //判断导弹是否按下
-               else if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
+                else if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
                         && Point_y < missile_bt_y + missile_bt.getHeight()) {
                     if (missileCount > 0) {
                         missileCount--;
@@ -437,8 +418,30 @@ public class MainGame extends View implements Runnable{
                         }).start();
                     }
                 }
-
-
+                //触摸移动飞机
+                if(Point_x > plane.x
+                        && Point_x < plane.x + plane.width
+                        && Point_y > plane.y
+                        && Point_y < plane.y + plane.height) {
+                    if (Point_x >= plane.x + plane.width / 2) {
+                        plane.x += (Point_x - plane.x - plane.width / 2) / 4;
+                    } else {
+                        plane.x -= (-Point_x + plane.x + plane.width / 2) / 4;
+                    }
+                    if (Point_y >= plane.y + plane.height / 2) {
+                        plane.y += (Point_y - plane.y - plane.height / 2) / 4;
+                    } else {
+                        plane.y -= (-Point_y + plane.y + plane.height / 2) / 4;
+                    }
+                }
+                //边界检测
+                if (plane.x <= 0) {//高度检测
+                    plane.x = 0;
+                }
+                if (plane.x + plane.width >= Screen_w) {//宽度检测
+                    plane.x = Screen_w - plane.width;
+                }
+                //判断导弹是否按下
                 //子弹移动
                 for (i = 0; i <= 49; i++) {
                     if (pb[i].visual == 1) {
@@ -718,7 +721,6 @@ public class MainGame extends View implements Runnable{
             canvas.drawText("X " + String.valueOf(missileCount),
                     10 + missile_bt.getWidth(), Screen_h - 25, paint);// 绘制文字
         }
-
 
         //画必杀技
         if (plane.getMissileState()) {
