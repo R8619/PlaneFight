@@ -12,7 +12,7 @@ import android.view.WindowManager;
 import com.wlw2_11.planefight.Game.MainGame2;
 import com.wlw2_11.planefight.sounds.MusicServer;
 
-public class Main2Activity extends AppCompatActivity {
+public class Main2Activity extends AppCompatActivity implements View.OnTouchListener{//触摸监听事件{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +27,7 @@ public class Main2Activity extends AppCompatActivity {
         WindowManager wm = this.getWindowManager();//屏幕管理器
         Display display = wm.getDefaultDisplay();//获取默认的屏幕
         MainGame2 gameView = new MainGame2(this, display);//创建一个游戏视图
-        gameView.setOnTouchListener(new touch2());//新建一个游戏触摸视图
+        gameView.setOnTouchListener(this);//新建一个游戏触摸视图
         this.setContentView(gameView);
     }
 
@@ -37,8 +37,8 @@ public class Main2Activity extends AppCompatActivity {
         final Intent intent = new Intent(this,MusicServer.class);
         stopService(intent);
     }
-}
-class touch2 implements View.OnTouchListener{//触摸监听事件
+
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             MainGame2.isdown=true;

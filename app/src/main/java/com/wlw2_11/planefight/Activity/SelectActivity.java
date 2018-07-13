@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.wlw2_11.planefight.MainActivity;
 import com.wlw2_11.planefight.R;
 
 public class SelectActivity extends AppCompatActivity {

@@ -1,11 +1,8 @@
-package com.wlw2_11.planefight;
+package com.wlw2_11.planefight.Activity;
 
-import android.app.Service;
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.app.Activity;
-import android.graphics.Color;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,9 +12,9 @@ import android.view.WindowManager;
 import com.wlw2_11.planefight.Game.MainGame;
 import com.wlw2_11.planefight.sounds.MusicServer;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements View.OnTouchListener{
 
-   // bindService(intent,coon,Service.BIND_AUTO_CREATE)
+      // bindService(intent,coon,Service.BIND_AUTO_CREATE)
      //Intent intent = new Intent(MainActivity.this, MusicServer.class);
     //private Intent intent = new Intent("com.angel.Android.MUSIC");
     @Override
@@ -33,7 +30,7 @@ public class MainActivity extends Activity {
         WindowManager wm = this.getWindowManager();//屏幕管理器
         Display display = wm.getDefaultDisplay();//获取默认的屏幕
         MainGame gameView = new MainGame(this, display);//创建一个游戏视图
-        gameView.setOnTouchListener(new touch());//新建一个游戏触摸视图
+        gameView.setOnTouchListener(this);//新建一个游戏触摸视图
         this.setContentView(gameView);
     }
 
@@ -43,8 +40,8 @@ public class MainActivity extends Activity {
         final Intent intent = new Intent(this,MusicServer.class);
         stopService(intent);
     }
-}
-class touch implements View.OnTouchListener{//触摸监听事件
+
+    @Override
     public boolean onTouch(View v, MotionEvent event) {
         if(event.getAction()==MotionEvent.ACTION_DOWN){
             MainGame.isdown=true;
@@ -56,12 +53,5 @@ class touch implements View.OnTouchListener{//触摸监听事件
         MainGame.Point_y = (int) event.getRawY();
         return true;
     }
-
-
-
-    /*protected void onDestroy() {
-
-        final Intent intent = new Intent(this,MusicServer.class);
-    }*/
-
 }
+

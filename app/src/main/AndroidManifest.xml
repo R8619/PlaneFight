@@ -9,8 +9,15 @@
         android:roundIcon="@mipmap/icon1"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-
+        <activity
+            android:name=".Activity.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
         <service android:name=".sounds.MusicServer">
             android:enabled="true"
             android:exported="true" >
@@ -19,10 +26,10 @@
             </intent-filter>
         </service>
 
-        <!--<activity android:name="com.wlw2_11.planefight.Activity.SettingsActivity" />
+        <activity android:name=".Activity.Main1Activity" />
         <activity android:name=".Activity.Main2Activity" />
         <activity android:name=".Activity.SelectActivity" />
-        <activity android:name=".Activity.HelpActivity" />-->
+        <activity android:name=".Activity.HelpActivity" />
         <activity
             android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
