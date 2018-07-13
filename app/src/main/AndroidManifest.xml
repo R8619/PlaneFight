@@ -11,7 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity" />
 
-        <service android:name="MusicServer">
+        <service android:name=".sounds.MusicServer">
             android:enabled="true"
             android:exported="true" >
             <intent-filter>
@@ -19,12 +19,12 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".Main1Activity" />
-        <activity android:name=".Main2Activity" />
-        <activity android:name=".SelectActivity" />
-        <activity android:name=".HelpActivity" />
+        <!--<activity android:name="com.wlw2_11.planefight.Activity.SettingsActivity" />
+        <activity android:name=".Activity.Main2Activity" />
+        <activity android:name=".Activity.SelectActivity" />
+        <activity android:name=".Activity.HelpActivity" />-->
         <activity
-            android:name=".SettingsActivity"
+            android:name=".Activity.SettingsActivity"
             android:label="@string/title_activity_settings"></activity>
     </application>
 
