@@ -2,13 +2,11 @@ package com.wlw2_11.planefight.Game;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
@@ -584,6 +582,26 @@ public class MainGame2 extends View implements Runnable {
             canvas.drawBitmap(HERO,null,new Rect(plane.x,plane.y,plane.x+plane.width,plane.y+plane.height),paint);
         }
         //画己方子弹
+        paint.setColor(Color.YELLOW);
+        for(j=0;j<=49;j++) {
+            if(pb[j].visual==1) {
+                if(strBullet==0){
+                    paint.setColor(Color.YELLOW);
+                }else{
+                    paint.setColor(Color.rgb(0, 255, 255));
+                }
+                canvas.drawBitmap(PBULLET,null,new Rect(pb[j].x,pb[j].y,pb[j].x+pb[j].width,pb[j].y+pb[j].height),paint);
+            }
+            if(pb[j].boo==2){
+                canvas.drawBitmap(BOO,null,new Rect(pb[j].x-20,pb[j].y-20,pb[j].x + pb[j].width+20,pb[j].y + pb[j].height+20),paint);
+                pb[j].boo--;
+            }
+            if(pb[j].boo==1){
+                canvas.drawBitmap(BOO,null,new Rect(pb[j].x-40,pb[j].y-40,pb[j].x + pb[j].width+40,pb[j].y + pb[j].height+40),paint);
+                pb[j].boo--;
+            }
+        }
+        //画副武器
         paint.setColor(Color.YELLOW);
         for(j=0;j<=49;j++) {
             if(pb[j].visual==1) {

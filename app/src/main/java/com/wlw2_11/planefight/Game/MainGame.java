@@ -8,7 +8,6 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
@@ -33,9 +32,7 @@ public class MainGame extends View implements Runnable{
     private int missileCount; // 导弹的数量
     private Bitmap missile_bt; // 导弹按钮图标
     private Bitmap vice_weapon;//副武器图标
-    private float bg_y; // 图片的坐标
     private float missile_bt_y;
-    private boolean boom_state = false;
     long MISSILEBOOM_TIME = 500;// 我方导弹爆炸;
     private Bitmap boom;//爆炸效果图
     public static int Screen_w;
@@ -48,15 +45,15 @@ public class MainGame extends View implements Runnable{
     public int idse;
     public int numOfDestroy=0;
     public int ideb=1;//敌机子弹编号
-    public int vde =1;//副武器子弹编号
+    public int vde =0;//副武器子弹编号
     public int numOfEnemy;
     public int numOfStrenemy;
     public int i;
     public int j;
+    public int time;
     public int strBullet=0;
     public int doubleBullet=0;
     public int mutileweapon=0;//多副武器子弹
-    public int strvice=0;
     public int idOfTreasure;
     public boolean isWin=false;
     public int temp=1;
@@ -291,6 +288,7 @@ public class MainGame extends View implements Runnable{
             }
             //按下之后
             if(isdown==true) {
+                time++;
                 temp++;
                 if(temp==5){
 
@@ -326,133 +324,154 @@ public class MainGame extends View implements Runnable{
                                 }
                             }
                         }
-                        if(mutileweapon==0) {
-                            weapons[id].visual = 1;
-                            weapons[id].x = plane.x + plane.width / 2+50;
-                            weapons[id].y = plane.y+5;
-                            weapons[id].v = 50;
-                            if (id <= 48) {
-                                id++;
-                            } else {
-                                id = 0;
-                            }
-                            weapons[id].visual = 1;
-                            weapons[id].x = plane.x + plane.width / 2-50;
-                            weapons[id].y = plane.y+5;
-                            weapons[id].v = 50;
+                        if(doubleBullet==0) {
+                            pb[id].visual = 1;
+                            pb[id].x = plane.x + plane.width / 2;
+                            pb[id].y = plane.y;
+                            pb[id].v = 40;
                             if (id <= 48) {
                                 id++;
                             } else {
                                 id = 0;
                             }
                         }
-                        if(mutileweapon>=1){
-                            weapons[id].visual = 1;
-                            weapons[id].x = plane.x + plane.width / 2+50;
-                            weapons[id].y = plane.y+5;
-                            weapons[id].v = 50;
-                            if (id <= 48) {
-                                id++;
-                            } else {
-                                id = 0;
-                            }
-                            weapons[id].visual = 1;
-                            weapons[id].x = plane.x + plane.width / 2-50;
-                            weapons[id].y = plane.y+5;
-                            weapons[id].v = 50;
-                            if (id <= 48) {
-                                id++;
-                            } else {
-                                id = 0;
-                            }
-                            pb[id].visual = 1;
-                            pb[id].x = plane.x + plane.width / 2+55;
-                            pb[id].y = plane.y;
-                            pb[id].v = 40;
-                            if (id <= 48) {
-                                id++;
-                            } else {
-                                id = 0;
-                            }
-                            pb[id].visual = 1;
-                            pb[id].x = plane.x + plane.width / 2-55;
-                            pb[id].y = plane.y;
-                            pb[id].v = 40;
-                            if (id <= 48) {
-                                id++;
-                            } else {
-                                id = 0;
-                            }
-                            if(doubleBullet>=2) {
-                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2+60;
-                                pb[id].y = plane.y-5;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
+                        if (time%7==0) {
+                            while (time==100)
+                                time=0;
+                            if (mutileweapon >= 1) {
+                                weapons[vde].visual = 1;
+                                weapons[vde].x = plane.x + plane.width / 2 + 45;
+                                weapons[vde].y = plane.y + 5;
+                                if (mutileweapon == 0)
+                                    weapons[vde].v = 10;
+                                if (mutileweapon == 1)
+                                    weapons[vde].v = 15;
+                                if (mutileweapon == 2)
+                                    weapons[vde].v = 20;
+                                if (mutileweapon == 3)
+                                    weapons[vde].v = 25;
+                                if (vde <= 48) {
+                                    vde++;
                                 } else {
-                                    id = 0;
+                                    vde = 0;
                                 }
-                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2-60;
-                                pb[id].y = plane.y-5;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
+                                weapons[vde].visual = 1;
+                                weapons[vde].x = plane.x + plane.width / 2 - 45;
+                                weapons[vde].y = plane.y + 5;
+                                if (mutileweapon == 0)
+                                    weapons[vde].v = 10;
+                                if (mutileweapon == 1)
+                                    weapons[vde].v = 15;
+                                if (mutileweapon == 2)
+                                    weapons[vde].v = 20;
+                                if (mutileweapon == 3)
+                                    weapons[vde].v = 25;
+                                if (vde <= 48) {
+                                    vde++;
                                 } else {
-                                    id = 0;
+                                    vde = 0;
+                                }
+                                if (mutileweapon >= 2) {
+                                    weapons[vde].visual = 1;
+                                    weapons[vde].x = plane.x + plane.width / 2 + 70;
+                                    weapons[vde].y = plane.y - 10;
+                                    if (mutileweapon == 0)
+                                        weapons[vde].v = 10;
+                                    if (mutileweapon == 1)
+                                        weapons[vde].v = 15;
+                                    if (mutileweapon == 2)
+                                        weapons[vde].v = 20;
+                                    if (mutileweapon == 3)
+                                        weapons[vde].v = 25;
+                                    if (vde <= 48) {
+                                        vde++;
+                                    } else {
+                                        vde = 0;
+                                    }
+                                    weapons[vde].visual = 1;
+                                    weapons[vde].x = plane.x + plane.width / 2 - 70;
+                                    weapons[vde].y = plane.y - 10;
+                                    if (mutileweapon == 0)
+                                        weapons[vde].v = 10;
+                                    if (mutileweapon == 1)
+                                        weapons[vde].v = 15;
+                                    if (mutileweapon == 2)
+                                        weapons[vde].v = 20;
+                                    if (mutileweapon == 3)
+                                        weapons[vde].v = 25;
+                                    if (vde <= 48) {
+                                        vde++;
+                                    } else {
+                                        vde = 0;
+                                    }
+                                }
+                                if (mutileweapon >= 3) {
+                                    weapons[vde].visual = 1;
+                                    weapons[vde].x = plane.x + plane.width / 2 + 95;
+                                    weapons[vde].y = plane.y - 25;
+                                    if (mutileweapon == 0)
+                                        weapons[vde].v = 10;
+                                    if (mutileweapon == 1)
+                                        weapons[vde].v = 15;
+                                    if (mutileweapon == 2)
+                                        weapons[vde].v = 20;
+                                    if (mutileweapon == 3)
+                                        weapons[vde].v = 25;
+                                    if (vde <= 48) {
+                                        vde++;
+                                    } else {
+                                        vde = 0;
+                                    }
+                                    weapons[vde].visual = 1;
+                                    weapons[vde].x = plane.x + plane.width / 2 - 95;
+                                    weapons[vde].y = plane.y - 25;
+                                    if (mutileweapon == 0)
+                                        weapons[vde].v = 10;
+                                    if (mutileweapon == 1)
+                                        weapons[vde].v = 15;
+                                    if (mutileweapon == 2)
+                                        weapons[vde].v = 20;
+                                    if (mutileweapon == 3)
+                                        weapons[vde].v = 25;
+                                    if (vde <= 48) {
+                                        vde++;
+                                    } else {
+                                        vde = 0;
+                                    }
                                 }
                             }
-                            if(doubleBullet>=3) {
-                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2+50;
-                                pb[id].y = plane.y;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
+                            if (mutileweapon >= 0) {
+                                weapons[vde].visual = 1;
+                                weapons[vde].x = plane.x + plane.width / 2 + 20;
+                                weapons[vde].y = plane.y + 20;
+                                if (mutileweapon == 0)
+                                weapons[vde].v = 10;
+                                if (mutileweapon == 1)
+                                    weapons[vde].v = 15;
+                                if (mutileweapon == 2)
+                                    weapons[vde].v = 20;
+                                if (mutileweapon == 3)
+                                    weapons[vde].v = 25;
+                                if (vde <= 48) {
+                                    vde++;
                                 } else {
-                                    id = 0;
-                                }                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2-50;
-                                pb[id].y = plane.y;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
-                                } else {
-                                    id = 0;
-                                }                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2+55;
-                                pb[id].y = plane.y-5;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
-                                } else {
-                                    id = 0;
-                                }                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2-55;
-                                pb[id].y = plane.y-5;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
-                                } else {
-                                    id = 0;
-                                }                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2+60;
-                                pb[id].y = plane.y-10;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
-                                } else {
-                                    id = 0;
+                                    vde = 0;
                                 }
-                                pb[id].visual = 1;
-                                pb[id].x = plane.x + plane.width / 2-60;
-                                pb[id].y = plane.y-10;
-                                pb[id].v = 40;
-                                if (id <= 48) {
-                                    id++;
+                                weapons[vde].visual = 1;
+                                weapons[vde].x = plane.x + plane.width / 2 - 20;
+                                weapons[vde].y = plane.y + 20;
+                                if (mutileweapon == 0)
+                                    weapons[vde].v = 10;
+                                if (mutileweapon == 1)
+                                    weapons[vde].v = 15;
+                                if (mutileweapon == 2)
+                                    weapons[vde].v = 20;
+                                if (mutileweapon == 3)
+                                    weapons[vde].v = 25;
+                                if (vde <= 48) {
+                                    vde++;
                                 } else {
-                                    id = 0;
+                                    vde = 0;
                                 }
                             }
                         }
@@ -650,8 +669,8 @@ public class MainGame extends View implements Runnable{
             for(i=0;i<=49;i++){
                 for(j=1;j<=40;j++){
                     if(weapons[i].visual==1 && strenemy[j].visual==1){
-                        if(weapons[i].x>=strenemy[j].x&&pb[i].x<=strenemy[j].x+strenemy[j].width){
-                            if (weapons[i].y <=strenemy[j].y + strenemy[j].height&&pb[i].y>=strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
+                        if(weapons[i].x>=strenemy[j].x&&weapons[i].x<=strenemy[j].x+strenemy[j].width){
+                            if (weapons[i].y <=strenemy[j].y + strenemy[j].height&&weapons[i].y>=strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
                                 strenemy[j].life-=3;
                                 strenemy[j].visual = 0;
                                 weapons[i].visual = 0;
@@ -713,11 +732,7 @@ public class MainGame extends View implements Runnable{
                     if(weapons[i].visual==1){
                         if(weapons[i].x>=boss.x&&pb[i].x<=boss.x+boss.width) {
                             if (weapons[i].y <= boss.y + boss.height && pb[i].y >= boss.y) {
-                                if(strvice==0) {
-                                    boss.life-=2;
-                                }else{
                                     boss.life-=3;
-                                }
                                 if(boss.life<=0){
                                     isWin=true;
                                 }
@@ -802,8 +817,8 @@ public class MainGame extends View implements Runnable{
                 if(strenemy[j].visual==1) {
                     if (strenemy[j].x+strenemy[j].width-5>= plane.x && strenemy[j].x+5<= plane.x + plane.width) {
                         if(strenemy[j].y+strenemy[j].height>= plane.y&&strenemy[j].y<=plane.y+plane.height) {
-                            isLose = true;
-                            plane.life=0;
+                            //isLose = true;
+                            plane.life-=2;
                             strenemy[j].life = 0;
                             strenemy[j].visual = 0;
                             strenemy[j].boo = 2;
