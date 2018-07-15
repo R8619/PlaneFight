@@ -17,7 +17,7 @@ public class SecondActivity extends AppCompatActivity {
         if (button != null) {
             button.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                    Intent intent=new Intent(SecondActivity.this,SelectActivity.class);
+                    Intent intent=new Intent(SecondActivity.this,MainActivity.class);
                     startActivity(intent);
                 }
             });
