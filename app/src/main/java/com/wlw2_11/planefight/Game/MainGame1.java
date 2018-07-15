@@ -547,18 +547,18 @@ public class MainGame1 extends View implements Runnable{
         }
     }
     //下面是根据位图Bitmap把图片转换成了数据流
-    Bitmap BBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.bb)).getBitmap() :null;//利用位图转换数据
-    Bitmap EBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.eb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.eb)).getBitmap() :null;
-    Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.pb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.pb)).getBitmap() :null;
-    Bitmap BOSS = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boss)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boss)).getBitmap() :null;
-    Bitmap ENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.enemy)).getBitmap() : null;
-    Bitmap STRENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.strenemy)).getBitmap() : null;
-    Bitmap BOO = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boo)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.boo)).getBitmap() : null;
-    Bitmap BACK1 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back3)).getBitmap() : null;
-    Bitmap BACK = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.back)).getBitmap() : null;
-    Bitmap TREA1 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea1)).getBitmap() : null;
-    Bitmap TREA2 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea2)).getBitmap() : null;
-    Bitmap TREA3 = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.trea3)).getBitmap() : null;
+    Bitmap BBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.bb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.bb)).getBitmap() :null;//利用位图转换数据
+    Bitmap EBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.eb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.eb)).getBitmap() :null;
+    Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.pb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.pb)).getBitmap() :null;
+    Bitmap BOSS = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boss)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boss)).getBitmap() :null;
+    Bitmap ENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.enemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.enemy)).getBitmap() : null;
+    Bitmap STRENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.strenemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.strenemy)).getBitmap() : null;
+    Bitmap BOO = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boo)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boo)).getBitmap() : null;
+    Bitmap BACK1 = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back3)).getBitmap() : null;
+    Bitmap BACK = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back)).getBitmap() : null;
+    Bitmap TREA1 = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.trea1)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.trea1)).getBitmap() : null;
+    Bitmap TREA2 = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.trea2)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.trea2)).getBitmap() : null;
+    Bitmap TREA3 = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.trea3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.trea3)).getBitmap() : null;
     protected void onDraw(Canvas canvas) {//绘图函数，就是动画的绘图了
         super.onDraw(canvas);
         paint.setColor(Color.WHITE);
@@ -579,8 +579,8 @@ public class MainGame1 extends View implements Runnable{
             canvas.drawRect(80, Screen_h - 1750, 80 + boss.life * 5, Screen_h - 1700, paint);
         }
         //画己方飞机
-        if (((BitmapDrawable) this.getResources().getDrawable(R.drawable.plane)) != null) {
-            Bitmap HERO = ((BitmapDrawable) this.getResources().getDrawable(R.drawable.plane)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.drawable.plane)).getBitmap() : null;
+        if (((BitmapDrawable) this.getResources().getDrawable(R.mipmap.plane)) != null) {
+            Bitmap HERO = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.plane)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.plane)).getBitmap() : null;
             canvas.drawBitmap(HERO,null,new Rect(plane.x,plane.y,plane.x+plane.width,plane.y+plane.height),paint);
         }
         //画己方子弹

@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    android:background="@drawabl/back2">
+    android:background="@mipmap/back2">
 
     <TextView
         android:id="@+id/textView2"
@@ -17,7 +17,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="17dp"
-        android:background="@drawable/text" />
+        android:background="@mipmap/text" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_height="50dp"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/btn"
+        android:background="@mipmap/btn"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
     <Button
@@ -45,7 +45,7 @@
         android:layout_alignStart="@+id/button"
         android:layout_below="@+id/button"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn2"/>
+        android:background="@mipmap/btn2"/>
 
     <Button
         android:id="@+id/button3"
@@ -55,7 +55,7 @@
         android:layout_alignStart="@+id/button2"
         android:layout_below="@+id/button2"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn3" />
+        android:background="@mipmap/btn3" />
 
     <Button
         android:id="@+id/button1"
@@ -65,7 +65,7 @@
         android:layout_alignStart="@+id/button3"
         android:layout_below="@+id/button3"
         android:layout_marginTop="10dp"
-        android:background="@drawable/btn1"
+        android:background="@mipmap/btn1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2" />
 
 
