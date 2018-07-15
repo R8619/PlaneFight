@@ -20,7 +20,7 @@ public class Enemy {
     public Enemy(){
         Random random=new Random();
         y=0;
-        width=97;//敌机的宽度
+        width=150;//敌机的宽度
         height=124;//敌机的长度
         visual=0;
         life=2;

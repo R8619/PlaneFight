@@ -18,7 +18,7 @@ public class Plane {
     public Plane(){
         x=300;
         y=1400;
-        width=97;
+        width=150;
         height=124;
         life=40;
         boo=0;

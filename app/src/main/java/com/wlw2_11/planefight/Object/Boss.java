@@ -18,8 +18,8 @@ public class Boss {
     public Boss(){
         x=200;
         y=-300;
-        width=208;
-        height=200;
+        width=420;
+        height=400;
         v=10;
         visual=0;
         life=200;

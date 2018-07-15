@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/PlaneFight.iml" filepath="$PROJECT_DIR$/PlaneFight.iml" />
+      <module fileurl="file://D:\AndroidStudioProjects\PlaneFight\PlaneFight.iml" filepath="D:\AndroidStudioProjects\PlaneFight\PlaneFight.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://D:\AndroidStudioProjects\PlaneFight\app\app.iml" filepath="D:\AndroidStudioProjects\PlaneFight\app\app.iml" />
     </modules>
   </component>
 </project>

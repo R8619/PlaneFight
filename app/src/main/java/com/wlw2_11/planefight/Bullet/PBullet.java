@@ -8,8 +8,8 @@ package com.wlw2_11.planefight.Bullet;
 
 public class PBullet extends WeaponFactory {
     public PBullet(){
-        width=10;
-        height=42;
+        width=20;
+        height=70;
         visual=0;
         boo=0;
     }

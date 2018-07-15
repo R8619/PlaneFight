@@ -46,7 +46,6 @@ public class MainGame extends View implements Runnable{
     public static int Point_y=0;
     public static boolean isdown;
     public int ide;//敌机编号
-    public int idse;
     public int numOfDestroy=0;
     public int ideb=1;//敌机子弹编号
     public int vde =0;//副武器子弹编号
@@ -76,7 +75,6 @@ public class MainGame extends View implements Runnable{
     EBullet[] eb;
     BBullet[] bb;
     Enemy[] enemy;
-    Strenemy[] strenemy;
     private Context mcontext;
     public MainGame(Context context, Display display) {//初始化
         super(context);
@@ -86,24 +84,20 @@ public class MainGame extends View implements Runnable{
         Screen_h = display.getHeight();///获取屏幕的高
         paint = new Paint();
         ide=1;//初始化敌机编号
-        idse=1;
         idOfTreasure=0;
         numOfEnemy=0;
-        numOfStrenemy=0;
         plane=new Plane();//新建飞机
         pb=new PBullet[50];//新建子弹
         eb=new EBullet[160];
         bb=new BBullet[160];
         weapons = new ViceWeapon[50];//新建副武器
         enemy=new Enemy[50];//新建敌机
-        strenemy=new Strenemy[50];
         treasure=new Treasure[70];//新建宝物
         boss=new Boss();//新建Boss
         for(i=0;i<=49;i++){
             pb[i]=new PBullet();
             enemy[i]=new Enemy();
             weapons[i]=new ViceWeapon();
-            strenemy[i]=new Strenemy();
         }
         //新建宝物
         for(i=0;i<=65;i++){
@@ -168,32 +162,6 @@ public class MainGame extends View implements Runnable{
                     numOfEnemy++;
                 }
             }
-            //产生加强版敌机
-            if(boss.visual==0){//如果BOSS不出现
-                if(enemy[ide].visual==0) {
-                    //如果是第一个
-                    if (idse == 1) {
-                        strenemy[idse].visual = 1;
-                        strenemy[idse].y = 0;
-                        idse++;//敌机编号加1
-                        numOfStrenemy++;//敌机数目加1
-                    } else if (idse > 0 && idse <= 39) {//可知敌机的数目只有39架，可以回头测试数目
-                        if (strenemy[idse-1].y >= 250) {//如果上一架飞机Y轴的位置大于了400
-                            strenemy[idse].visual = 1;//出现新飞机，也就是说每300的Y轴出现一架飞机，飞机的间距是已经设置好的。
-                            strenemy[idse].y = 0;//初始时Y轴的位置
-                            idse++;//编号+1
-                            numOfStrenemy++;//敌机总数+1
-                        }
-                    }
-                }
-                if(idse==40){
-                    strenemy[idse].visual = 1;
-                    strenemy[idse].y=0;
-                    idse=1;
-                    strenemy[idse].y=0;
-                    numOfStrenemy++;
-                }
-            }
             //敌机移动
             for(i=1;i<=40;i++) {
                 enemy[i].y+=enemy[i].v;
@@ -207,17 +175,30 @@ public class MainGame extends View implements Runnable{
                     }
                 }
             }
-            //加强版敌机移动
-            for(i=1;i<=40;i++) {
-                strenemy[i].y += strenemy[i].v;
-                if (strenemy[i].y >= Screen_h) {
-                    strenemy[i].visual = 0;//敌机消失
-                }
-            }
             //敌机产生子弹
             for(i=1;i<=40;i++){
                 if(enemy[i].visual==1){
-                    if((enemy[i].y>=100+i*40&&enemy[i].y<=110+i*40 && enemy[i].v>0)||(enemy[i].y>=300&&enemy[i].y<=310)){
+                    if((enemy[i].y>=100&&enemy[i].y<=110)){
+                        eb[ideb].visual = 1;
+                        eb[ideb].y = enemy[i].y+enemy[i].height;
+                        eb[ideb].x = enemy[i].x+enemy[i].width/2 + 20;
+                        ideb++;
+                        eb[ideb].visual = 1;
+                        eb[ideb].y = enemy[i].y+enemy[i].height;
+                        eb[ideb].x = enemy[i].x+enemy[i].width/2 - 20;
+                        ideb++;
+                    }
+                    if((enemy[i].y>=250&&enemy[i].y<=260)){
+                        eb[ideb].visual = 1;
+                        eb[ideb].y = enemy[i].y+enemy[i].height;
+                        eb[ideb].x = enemy[i].x+enemy[i].width/2 + 20;
+                        ideb++;
+                        eb[ideb].visual = 1;
+                        eb[ideb].y = enemy[i].y+enemy[i].height;
+                        eb[ideb].x = enemy[i].x+enemy[i].width/2 - 20;
+                        ideb++;
+                    }
+                    if((enemy[i].y>=400&&enemy[i].y<=410)){
                         eb[ideb].visual = 1;
                         eb[ideb].y = enemy[i].y+enemy[i].height;
                         eb[ideb].x = enemy[i].x+enemy[i].width/2 + 20;
@@ -523,14 +504,6 @@ public class MainGame extends View implements Runnable{
                         if (boss.visual==1){
                             boss.life-=10;
                         }
-                        for (int j=0;j<40;j++){              //循环40个强化敌机
-                            if(strenemy[j].visual==1&& 0<strenemy[j].x&&strenemy[j].x<Screen_w&&0<strenemy[j].y&&strenemy[j].y<Screen_h){      //敌机存在并 判读敌机位置
-                                strenemy[j].life-=2;
-                                strenemy[j].visual = 0;//满足以上条件，敌机灭亡
-                                strenemy[j].boo=3;//爆炸
-                                numOfDestroy++;//击杀+1
-                            }
-                        }
                         new Thread(new Runnable() {
 
                             @Override
@@ -553,14 +526,14 @@ public class MainGame extends View implements Runnable{
 
                     //触摸移动飞机
                     if (Point_x >= plane.x + plane.width / 2) {
-                        plane.x += (Point_x-plane.x-plane.width / 2)/4;
+                        plane.x += (Point_x-plane.x-plane.width / 2);
                     } else {
-                        plane.x -= (-Point_x+plane.x+plane.width / 2)/4;
+                        plane.x -= (-Point_x+plane.x+plane.width / 2);
                     }
                     if (Point_y >= plane.y + plane.height / 2) {
-                        plane.y += (Point_y-plane.y-plane.height / 2)/4;
+                        plane.y += (Point_y-plane.y-plane.height / 2);
                     } else {
-                        plane.y -= (-Point_y+plane.y+plane.height / 2)/4;
+                        plane.y -= (-Point_y+plane.y+plane.height / 2);
                     }
                     //边界检测
                     if(plane.x<=0){//高度检测
@@ -687,42 +660,6 @@ public class MainGame extends View implements Runnable{
                         }
                     }
                 }
-            }
-            //子弹打到加强版敌机
-            for(i=0;i<=49;i++){
-                for(j=1;j<=40;j++){
-                    if(pb[i].visual==1 && strenemy[j].visual==1){
-                        if(pb[i].x>=strenemy[j].x&&pb[i].x<=strenemy[j].x+strenemy[j].width){
-                            if (pb[i].y <=strenemy[j].y + strenemy[j].height&&pb[i].y>=strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
-                                    strenemy[j].life-=2;
-                                    strenemy[j].visual = 0;
-                                    pb[i].visual = 0;
-                                    strenemy[j].boo = 3;
-                                    numOfDestroy++;
-
-                            }
-                        }
-                    }
-                }
-
-            }
-            //副武器打到加强版敌机
-            for(i=0;i<=49;i++){
-                for(j=1;j<=40;j++){
-                    if(weapons[i].visual==1 && strenemy[j].visual==1){
-                        if(weapons[i].x>=strenemy[j].x&&weapons[i].x<=strenemy[j].x+strenemy[j].width){
-                            if (weapons[i].y <=strenemy[j].y + strenemy[j].height&&weapons[i].y>=strenemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
-                                strenemy[j].life-=3;
-                                strenemy[j].visual = 0;
-                                weapons[i].visual = 0;
-                                strenemy[j].boo = 3;
-                                numOfDestroy++;
-
-                            }
-                        }
-                    }
-                }
-
             }
             //宝物移动
             for(i=0;i<=65;i++){
@@ -857,21 +794,6 @@ public class MainGame extends View implements Runnable{
                     }
                 }
             }
-            //与加强版飞机相撞
-            for(j=1;j<=40;j++){
-                if(strenemy[j].visual==1) {
-                    if (strenemy[j].x+strenemy[j].width-5>= plane.x && strenemy[j].x+5<= plane.x + plane.width) {
-                        if(strenemy[j].y+strenemy[j].height>= plane.y&&strenemy[j].y<=plane.y+plane.height) {
-                            //isLose = true;
-                            plane.life-=2;
-                            strenemy[j].life = 0;
-                            strenemy[j].visual = 0;
-                            strenemy[j].boo = 2;
-                            numOfDestroy++;
-                        }
-                    }
-                }
-            }
             this.postInvalidate();
             try {
                 Thread.sleep(50);
@@ -886,7 +808,6 @@ public class MainGame extends View implements Runnable{
     Bitmap PBULLET = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.pb)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.pb)).getBitmap() :null;
     Bitmap BOSS = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boss)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boss)).getBitmap() :null;
     Bitmap ENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.enemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.enemy)).getBitmap() : null;
-    Bitmap STRENEMY = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.strenemy)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.strenemy)).getBitmap() : null;
     Bitmap BOO = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boo)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.boo)).getBitmap() : null;
     Bitmap BACK1 = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back3)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back3)).getBitmap() : null;
     Bitmap BACK = ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back)) != null ? ((BitmapDrawable) this.getResources().getDrawable(R.mipmap.back)).getBitmap() : null;
@@ -986,9 +907,6 @@ public class MainGame extends View implements Runnable{
             if(enemy[j].visual==1){
                 canvas.drawBitmap(ENEMY,null,new Rect(enemy[j].x,enemy[j].y,enemy[j].x+enemy[j].width,enemy[j].y+enemy[j].height),paint);
             }
-            if(strenemy[j].visual==1){
-                canvas.drawBitmap(STRENEMY,null,new Rect(strenemy[j].x,strenemy[j].y,strenemy[j].x+strenemy[j].width,strenemy[j].y+strenemy[j].height),paint);
-            }
             if(enemy[j].boo!=0){
                 switch (enemy[j].boo){//爆炸的种类
                     case 3:
@@ -1002,23 +920,6 @@ public class MainGame extends View implements Runnable{
                     case 1:
                         canvas.drawBitmap(BOO,null,new Rect(enemy[j].x,enemy[j].y,enemy[j].x+enemy[j].width,enemy[j].y+enemy[j].height),paint);
                         enemy[j].boo--;
-                        break;
-
-                }
-            }
-            if(strenemy[j].boo!=0){
-                switch (strenemy[j].boo){//爆炸的种类
-                    case 3:
-                        canvas.drawBitmap(BOO,null,new Rect(strenemy[j].x+20,strenemy[j].y+20,strenemy[j].x+strenemy[j].width-20,strenemy[j].y+strenemy[j].height-20),paint);
-                        strenemy[j].boo--;
-                        break;
-                    case 2:
-                        canvas.drawBitmap(BOO,null,new Rect(strenemy[j].x+10,strenemy[j].y+10,strenemy[j].x+strenemy[j].width-10,strenemy[j].y+strenemy[j].height-10),paint);
-                        strenemy[j].boo--;
-                        break;
-                    case 1:
-                        canvas.drawBitmap(BOO,null,new Rect(strenemy[j].x,strenemy[j].y,strenemy[j].x+strenemy[j].width,strenemy[j].y+strenemy[j].height),paint);
-                        strenemy[j].boo--;
                         break;
 
                 }

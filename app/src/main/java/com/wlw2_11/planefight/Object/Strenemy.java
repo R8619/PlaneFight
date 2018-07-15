@@ -19,7 +19,7 @@ public class Strenemy {
     public Strenemy(){
         Random random=new Random();
         y=0;
-        width=115;//敌机的宽度
+        width=180;//敌机的宽度
         height=135;//敌机的长度
         visual=0;
         life=2;

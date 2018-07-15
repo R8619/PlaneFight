@@ -5,8 +5,8 @@ package com.wlw2_11.planefight.Bullet;
 
 public class BBullet extends WeaponFactory{
     public BBullet(){
-        this.width=15;
-        this.height=30;
+        this.width=30;
+        this.height=60;
         this.visual=0;
         this.y=0;
         this.v=30;
