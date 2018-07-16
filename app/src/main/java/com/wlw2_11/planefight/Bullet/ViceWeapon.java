@@ -4,10 +4,14 @@ package com.wlw2_11.planefight.Bullet;
  */
 
 public class ViceWeapon extends WeaponFactory {
+    public float a;
+    public int t;
     public ViceWeapon(){
-        width=40;
-        height=164;
+        width=15;
+        height=64;
         visual=0;
         boo=0;
+        t=0;
+        v=-6;
     }
 }

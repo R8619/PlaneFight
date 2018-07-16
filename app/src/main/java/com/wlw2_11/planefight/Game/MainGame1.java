@@ -376,34 +376,34 @@ public class MainGame1 extends View implements Runnable{
                                 time=0;
                             if (mutileweapon >= 1) {
                                 weapons[vde].visual = 1;
-                                weapons[vde].x = plane.x + plane.width / 2 + 45;
+                                weapons[vde].x = plane.x + plane.width / 2 + 60;
                                 weapons[vde].x = weapons[vde].x+2;
-                                weapons[vde].y = plane.y + 5;
+                                weapons[vde].y = plane.y - 5;
                                 if (mutileweapon == 0)
-                                    weapons[vde].v = 10;
+                                    weapons[vde].a = 1.5f;
                                 if (mutileweapon == 1)
-                                    weapons[vde].v = 15;
+                                    weapons[vde].a = 1.502f;
                                 if (mutileweapon == 2)
-                                    weapons[vde].v = 20;
+                                    weapons[vde].a = 1.504f;
                                 if (mutileweapon == 3)
-                                    weapons[vde].v = 25;
+                                    weapons[vde].a = 1.505f;
                                 if (vde <= 48) {
                                     vde++;
                                 } else {
                                     vde = 0;
                                 }
                                 weapons[vde].visual = 1;
-                                weapons[vde].x = plane.x + plane.width / 2 - 45;
+                                weapons[vde].x = plane.x + plane.width / 2 - 60;
                                 weapons[vde].x = weapons[vde].x-2;
-                                weapons[vde].y = plane.y + 5;
+                                weapons[vde].y = plane.y - 5;
                                 if (mutileweapon == 0)
-                                    weapons[vde].v = 10;
+                                    weapons[vde].a = 1.5f;
                                 if (mutileweapon == 1)
-                                    weapons[vde].v = 15;
+                                    weapons[vde].a = 1.502f;
                                 if (mutileweapon == 2)
-                                    weapons[vde].v = 20;
+                                    weapons[vde].a = 1.504f;
                                 if (mutileweapon == 3)
-                                    weapons[vde].v = 25;
+                                    weapons[vde].a = 1.505f;
                                 if (vde <= 48) {
                                     vde++;
                                 } else {
@@ -411,34 +411,34 @@ public class MainGame1 extends View implements Runnable{
                                 }
                                 if (mutileweapon >= 2) {
                                     weapons[vde].visual = 1;
-                                    weapons[vde].x = plane.x + plane.width / 2 + 70;
+                                    weapons[vde].x = plane.x + plane.width / 2 + 100;
                                     weapons[vde].x = weapons[vde].x +3;
                                     weapons[vde].y = plane.y - 10;
                                     if (mutileweapon == 0)
-                                        weapons[vde].v = 10;
+                                        weapons[vde].a = 1.5f;
                                     if (mutileweapon == 1)
-                                        weapons[vde].v = 15;
+                                        weapons[vde].a = 1.502f;
                                     if (mutileweapon == 2)
-                                        weapons[vde].v = 20;
+                                        weapons[vde].a = 1.504f;
                                     if (mutileweapon == 3)
-                                        weapons[vde].v = 25;
+                                        weapons[vde].a = 1.505f;
                                     if (vde <= 48) {
                                         vde++;
                                     } else {
                                         vde = 0;
                                     }
                                     weapons[vde].visual = 1;
-                                    weapons[vde].x = plane.x + plane.width / 2 - 70;
+                                    weapons[vde].x = plane.x + plane.width / 2 - 100;
                                     weapons[vde].x = weapons[vde].x-3;
                                     weapons[vde].y = plane.y - 10;
                                     if (mutileweapon == 0)
-                                        weapons[vde].v = 10;
+                                        weapons[vde].a = 1.5f;
                                     if (mutileweapon == 1)
-                                        weapons[vde].v = 15;
+                                        weapons[vde].a = 1.502f;
                                     if (mutileweapon == 2)
-                                        weapons[vde].v = 20;
+                                        weapons[vde].a = 1.504f;
                                     if (mutileweapon == 3)
-                                        weapons[vde].v = 25;
+                                        weapons[vde].a = 1.505f;
                                     if (vde <= 48) {
                                         vde++;
                                     } else {
@@ -447,34 +447,34 @@ public class MainGame1 extends View implements Runnable{
                                 }
                                 if (mutileweapon >= 3) {
                                     weapons[vde].visual = 1;
-                                    weapons[vde].x = plane.x + plane.width / 2 + 95;
+                                    weapons[vde].x = plane.x + plane.width / 2 + 140;
                                     weapons[vde].x = weapons[vde].x+4;
                                     weapons[vde].y = plane.y - 25;
                                     if (mutileweapon == 0)
-                                        weapons[vde].v = 10;
+                                        weapons[vde].a = 1.5f;
                                     if (mutileweapon == 1)
-                                        weapons[vde].v = 15;
+                                        weapons[vde].a = 1.502f;
                                     if (mutileweapon == 2)
-                                        weapons[vde].v = 20;
+                                        weapons[vde].a = 1.504f;
                                     if (mutileweapon == 3)
-                                        weapons[vde].v = 25;
+                                        weapons[vde].a = 1.505f;
                                     if (vde <= 48) {
                                         vde++;
                                     } else {
                                         vde = 0;
                                     }
                                     weapons[vde].visual = 1;
-                                    weapons[vde].x = plane.x + plane.width / 2 - 95;
+                                    weapons[vde].x = plane.x + plane.width / 2 - 140;
                                     weapons[vde].x = weapons[vde].x-4;
                                     weapons[vde].y = plane.y - 25;
                                     if (mutileweapon == 0)
-                                        weapons[vde].v = 10;
+                                        weapons[vde].a = 1.5f;
                                     if (mutileweapon == 1)
-                                        weapons[vde].v = 15;
+                                        weapons[vde].a = 1.502f;
                                     if (mutileweapon == 2)
-                                        weapons[vde].v = 20;
+                                        weapons[vde].a = 1.504f;
                                     if (mutileweapon == 3)
-                                        weapons[vde].v = 25;
+                                        weapons[vde].a = 1.505f;
                                     if (vde <= 48) {
                                         vde++;
                                     } else {
@@ -486,15 +486,15 @@ public class MainGame1 extends View implements Runnable{
                                 weapons[vde].visual = 1;
                                 weapons[vde].x = plane.x + plane.width / 2 + 20;
                                 weapons[vde].x = weapons[vde].x+1;
-                                weapons[vde].y = plane.y + 20;
+                                weapons[vde].y = plane.y -20;
                                 if (mutileweapon == 0)
-                                    weapons[vde].v = 10;
+                                    weapons[vde].a = 1.5f;
                                 if (mutileweapon == 1)
-                                    weapons[vde].v = 15;
+                                    weapons[vde].a = 1.502f;
                                 if (mutileweapon == 2)
-                                    weapons[vde].v = 20;
+                                    weapons[vde].a = 1.504f;
                                 if (mutileweapon == 3)
-                                    weapons[vde].v = 25;
+                                    weapons[vde].a = 1.505f;
                                 if (vde <= 48) {
                                     vde++;
                                 } else {
@@ -503,15 +503,15 @@ public class MainGame1 extends View implements Runnable{
                                 weapons[vde].visual = 1;
                                 weapons[vde].x = plane.x + plane.width / 2 - 20;
                                 weapons[vde].x = weapons[vde].x-1;
-                                weapons[vde].y = plane.y + 20;
+                                weapons[vde].y = plane.y - 20;
                                 if (mutileweapon == 0)
-                                    weapons[vde].v = 10;
+                                    weapons[vde].a = 1.5f;
                                 if (mutileweapon == 1)
-                                    weapons[vde].v = 15;
+                                    weapons[vde].a = 1.502f;
                                 if (mutileweapon == 2)
-                                    weapons[vde].v = 20;
+                                    weapons[vde].a = 1.504f;
                                 if (mutileweapon == 3)
-                                    weapons[vde].v = 25;
+                                    weapons[vde].a = 1.505f;
                                 if (vde <= 48) {
                                     vde++;
                                 } else {
@@ -595,9 +595,11 @@ public class MainGame1 extends View implements Runnable{
             //副武器子弹的移动
             for(i=0;i<=49;i++) {
                 if (weapons[i].visual == 1) {
-                    weapons[i].y -= weapons[i].v;
+                    weapons[i].y -= weapons[i].v*weapons[i].t+weapons[i].a*weapons[i].t*weapons[i].t;
+                    weapons[i].t++;
                     if(weapons[i].y<=30){//如果子弹超过边界
                         weapons[i].visual=0;
+                        weapons[i].t=0;
                     }
                 }
             }
