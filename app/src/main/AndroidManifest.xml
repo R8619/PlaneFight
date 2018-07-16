@@ -10,8 +10,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".Activity.MainActivity"/>
-        <activity
             android:name=".Activity.SecondActivity"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme">
@@ -28,6 +26,7 @@
             </intent-filter>
         </service>
 
+        <activity android:name=".Activity.MainActivity" />
         <activity android:name=".Activity.Main1Activity" />
         <activity android:name=".Activity.Main2Activity" />
         <activity android:name=".Activity.SelectActivity" />

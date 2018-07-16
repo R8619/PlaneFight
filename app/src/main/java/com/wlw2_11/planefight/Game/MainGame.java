@@ -12,6 +12,7 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
@@ -37,7 +38,7 @@ import java.util.TimerTask;
 public class MainGame extends View implements Runnable{
     Bitmap img_bg;
     float g_t = 0;   // time
-    float g_bg_speed = 1000/60;// scrolling speed, pixel/second
+    float g_bg_speed = 500/60;// scrolling speed, pixel/second
     int g_x1, g_y1; // bg_1
     int g_x2, g_y2; // bg_2
     int g_bgH;
@@ -88,7 +89,15 @@ public class MainGame extends View implements Runnable{
     private Context mcontext;
     public MainGame(Context context, Display display) {//初始化
         super(context);
-        g_bgH = img_bg.getHeight();
+
+        missileCount=1;
+        mcontext = context;
+        Screen_w = display.getWidth();//获取屏幕的宽
+        Screen_h = display.getHeight();///获取屏幕的高
+
+
+        img_bg = BitmapFactory.decodeResource(context.getResources(), R.mipmap.bg1);
+        g_bgH =Screen_h;
         g_x1 = g_x2 = g_y1 = 0;
         g_y2 = -g_bgH;
 
@@ -101,10 +110,8 @@ public class MainGame extends View implements Runnable{
             }
         };
         timer.schedule(task, 0, 16);
-        missileCount=1;
-        mcontext = context;
-        Screen_w = display.getWidth();//获取屏幕的宽
-        Screen_h = display.getHeight();///获取屏幕的高
+
+
         paint = new Paint();
         ide=1;//初始化敌机编号
         idOfTreasure=0;
@@ -135,7 +142,7 @@ public class MainGame extends View implements Runnable{
             bb[i] = new BBullet();
         }
         missile_bt = BitmapFactory.decodeResource(getResources(), R.mipmap.missile_bt);
-        img_bg = BitmapFactory.decodeResource(context.getResources(), R.mipmap.bg1);
+
         boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
         vice_weapon =BitmapFactory.decodeResource(getResources(),R.mipmap.viceweapon);
         missile_goods = BitmapFactory.decodeResource(getResources(),R.mipmap.missile_goods);
@@ -153,13 +160,13 @@ public class MainGame extends View implements Runnable{
         musicId.put(2,soundPool.load(mcontext,R.raw.bigexplosion,1));
         //飞机活动
         while ((!isLose)&&(!isWin)) {//如果没有赢并且没有输，那么就会执行以下的程序
-            background+=10;//背景移动
+           /* background+=10;//背景移动
             background1+=10;
             if(background>=2100){
-                background=background1-2100;
-            }else if(background1>=2100){
-                background1=background-2100;
-            }
+                background=background1-2300;
+            }else if(background1>=2300){
+                background1=background-2300;
+            }*/
             //产生敌机
             if(boss.visual==0){//如果BOSS不出现
                 if(enemy[ide].visual==0) {//如果不存在飞机
@@ -602,7 +609,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //子弹打到敌机
-            for(i=0;i<=49;i++) {
+            for(int i=0;i<=49;i++) {
                 for(j=1;j<=40;j++){
                     if(pb[i].visual==1&&enemy[j].visual==1){//我方子弹和敌机存在
                         if(pb[i].x>=enemy[j].x&&pb[i].x<=enemy[j].x+enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
@@ -645,7 +652,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //副武器打到敌机
-            for(i=0;i<=49;i++) {
+            for(int i=0;i<=49;i++) {
                 for(j=1;j<=40;j++){
                     if(weapons[i].visual==1&&enemy[j].visual==1){//我方子弹和敌机存在
                         if(weapons[i].x>=enemy[j].x&&weapons[i].x<=enemy[j].x+enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
@@ -844,16 +851,22 @@ public class MainGame extends View implements Runnable{
     protected void onDraw(Canvas canvas) {//绘图函数，就是动画的绘图了
         super.onDraw(canvas);
         // scrooling
-        g_y1 += g_bg_speed;
-        g_y2 += g_bg_speed;
-        canvas.drawBitmap(img_bg, g_x1, g_y1, new Paint());
-        canvas.drawBitmap(img_bg, g_x2, g_y2, new Paint());
+
+     /*   canvas.drawBitmap(img_bg, g_x1, g_y1, new Paint());
+        canvas.drawBitmap(img_bg, g_x2, g_y2, new Paint());*/
+
+        canvas.drawBitmap(img_bg, null,new Rect(0,g_y1,Screen_w,g_y1+Screen_h), new Paint());
+        canvas.drawBitmap(img_bg, null,new Rect(0,g_y2,Screen_w,g_y2+Screen_h), new Paint());
+        Log.w("drawBitmap",g_y1+"____________________"+g_y2);
         // repeat
         if (g_y1 > g_bgH)
             g_y1 = g_y2 - g_bgH;
         if (g_y2 > g_bgH)
             g_y2 = g_y1 - g_bgH;
         g_t += 0.016;
+
+        g_y1 += g_bg_speed;
+        g_y2 += g_bg_speed;
         //Log.d(TAG, "onDraw: " + g_t);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
