@@ -66,8 +66,7 @@ public class MainGame extends View implements Runnable {
     public int vde = 0;//副武器子弹编号
     public int numOfEnemy;
     public int numOfStrenemy;
-    public int i;
-    public int j;
+
     public int time;
     public int strBullet = 0;
     public int doubleBullet = 0;
@@ -94,7 +93,7 @@ public class MainGame extends View implements Runnable {
     public MainGame(Context context, Display display) {//初始化
         super(context);
         AnimationManager.Init(context);
-        missileCount=100;
+        missileCount=5;
         mcontext = context;
         Screen_w = display.getWidth();//获取屏幕的宽
         Screen_h = display.getHeight();///获取屏幕的高
@@ -128,13 +127,13 @@ public class MainGame extends View implements Runnable {
         enemy=new Enemy[50];//新建敌机
         treasure=new Treasure[70];//新建宝物
         boss=new Boss();//新建Boss
-        for(i=0;i<=49;i++){
+        for(int i=0;i<=49;i++){
             pb[i]=new PBullet();
             enemy[i]=new Enemy();
             weapons[i]=new ViceWeapon();
         }
         //新建宝物
-        for(i=0;i<=65;i++){
+        for(int i=0;i<=65;i++){
             treasure[i]=new Treasure();
         }
         //新建敌机子弹
@@ -273,7 +272,7 @@ public class MainGame extends View implements Runnable {
                 if(ideb>=140){
                     ideb=1;
                 }
-                for(i=0;i<=10;i++) {
+                for(int i=0;i<=10;i++) {
                     if (boss.y >= 100+i*40 && boss.y <= 105+i*40&&boss.v>0) {
                         bb[ideb].visual = 1;
                         bb[ideb].y = boss.y + boss.height / 2;
@@ -306,7 +305,7 @@ public class MainGame extends View implements Runnable {
                 }
             }
             //BOSS子弹移动
-            for(i=1;i<=145;i++){
+            for(int i=1;i<=145;i++){
                 if(bb[i].visual==1){
                     bb[i].y+=bb[i].v;
                 }
@@ -536,6 +535,15 @@ public class MainGame extends View implements Runnable {
                                 numOfDestroy++;//击杀+1
                             }
                         }
+                        for (int i=1;i<=145;i++){
+                            if (eb[i].visual==1&& 0<eb[i].x&&eb[i].x<Screen_w&&0<eb[i].y&&eb[i].y<Screen_h||bb[i].visual==1&& 0<bb[i].x&&bb[i].x<Screen_w&&0<bb[i].y&&bb[i].y<Screen_h){
+                                eb[i].visual = 0;
+                                eb[i].visual = 3;
+                                bb[i].visual = 0;
+                                bb[i].visual = 3;
+                            }
+                        }
+
                         if (boss.visual==1){
                             boss.life-=10;
                         }
@@ -583,7 +591,7 @@ public class MainGame extends View implements Runnable {
 
             }
             //副武器子弹的移动
-            for(i=0;i<=49;i++) {
+            for(int i=0;i<=49;i++) {
                 if (weapons[i].visual == 1) {
                     weapons[i].y -= weapons[i].v*weapons[i].t+weapons[i].a*weapons[i].t*weapons[i].t;
                     weapons[i].t++;
@@ -748,7 +756,7 @@ public class MainGame extends View implements Runnable {
             }
             //副武器打到BOSS
             if(boss.visual!=0&&(boss.life>=4)) {
-                for (i = 0; i <= 49; i++) {
+                for (int i = 0; i <= 49; i++) {
                     if(weapons[i].visual==1){
                         if(weapons[i].x>=boss.x&&weapons[i].x<=boss.x+boss.width) {
                             if (weapons[i].y <= boss.y + boss.height && weapons[i].y >= boss.y) {
@@ -966,7 +974,7 @@ public class MainGame extends View implements Runnable {
             }
         }
         //画敌机
-        for(j=0;j<=40;j++){
+        for(int j=0;j<=40;j++){
             if(enemy[j].visual==1){
                 canvas.drawBitmap(ENEMY,null,new Rect(enemy[j].x,enemy[j].y,enemy[j].x+enemy[j].width,enemy[j].y+enemy[j].height),paint);
             }
@@ -989,7 +997,7 @@ public class MainGame extends View implements Runnable {
             }
         }
         //画敌机子弹
-        for(i=1;i<=145;i++){
+        for(int i=1;i<=145;i++){
             if(eb[i].visual==1){
                 canvas.drawBitmap(EBULLET,null,new Rect(eb[i].x,eb[i].y,eb[i].x+eb[i].width,eb[i].y+eb[i].height),paint);
             }
@@ -1013,7 +1021,7 @@ public class MainGame extends View implements Runnable {
             }
         }
         //画BOSS子弹
-        for(i=1;i<=145;i++){
+        for(int i=1;i<=145;i++){
             if(bb[i].visual==1){
                 paint.setColor(Color.RED);
                 canvas.drawBitmap(BBULLET,null,new Rect(bb[i].x,bb[i].y,bb[i].x+bb[i].width,bb[i].y+bb[i].height),paint);
