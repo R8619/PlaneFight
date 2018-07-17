@@ -39,6 +39,8 @@ public class MainGame1 extends View implements Runnable{
     private float missile_bt_y;
     long MISSILEBOOM_TIME = 500;// 我方导弹爆炸;
     private Bitmap boom;//爆炸效果图
+    private Bitmap boom1;//爆炸效果图
+    private Bitmap boom2;//爆炸效果图
     public static int Screen_w;
     public static int Screen_h;
     public static Paint paint;
@@ -77,6 +79,17 @@ public class MainGame1 extends View implements Runnable{
     BBullet[] bb;
     Enemy[] enemy;
     Strenemy[] strenemy;
+    int boom_id;
+    static int n = 3;
+    boolean isEnd;// 播放完毕
+    int x, y;
+    static public Bitmap[] img = new Bitmap[n];
+    static public void initRes(Context context){
+        img[0] = BitmapFactory.decodeResource(context.getResources(), R.mipmap.boom);
+        img[1] = BitmapFactory.decodeResource(context.getResources(), R.mipmap.boom1);
+        img[2] = BitmapFactory.decodeResource(context.getResources(), R.mipmap.boom2);
+    }
+
     private Context mcontext;
     public MainGame1(Context context, Display display) {//初始化
         super(context);
@@ -118,7 +131,9 @@ public class MainGame1 extends View implements Runnable{
             bb[i] = new BBullet();
         }
         missile_bt = BitmapFactory.decodeResource(getResources(), R.mipmap.missile_bt);
-        boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom1);
+        boom = BitmapFactory.decodeResource(getResources(),R.mipmap.boom);
+        boom1 = BitmapFactory.decodeResource(getResources(),R.mipmap.boom1);
+        boom2 = BitmapFactory.decodeResource(getResources(),R.mipmap.boom2);
         vice_weapon =BitmapFactory.decodeResource(getResources(),R.mipmap.viceweapon);
         missile_goods = BitmapFactory.decodeResource(getResources(),R.mipmap.missile_goods);
         missile_bt_y = Screen_h - 10 - missile_bt.getHeight();
@@ -126,6 +141,10 @@ public class MainGame1 extends View implements Runnable{
         background=0;
         this.thread = new Thread(this);//线程
         this.thread.start();//线程开始
+    }
+    public void Init(){
+        boom_id = 0;
+        isEnd = false;
     }
     public void run() {
         SoundPool soundPool;
@@ -947,7 +966,14 @@ public class MainGame1 extends View implements Runnable{
             float boom_x = plane.x- boom.getWidth() / 2+plane.width/2;
             float boom_y = plane.y - boom.getHeight() / 2+plane.height/2;
             canvas.drawBitmap(boom, boom_x, boom_y, paint);
-
+            canvas.drawBitmap(boom1, boom_x, boom_y, paint);
+            canvas.drawBitmap(boom2, boom_x, boom_y, paint);
+            /*if(boom_id < n){
+                canvas.drawBitmap(img[boom_id], boom_x, boom_y, new Paint());
+                ++boom_id;
+            }else
+                isEnd = true;
+            return;*/
         }
         //画己方飞机
         if (((BitmapDrawable) this.getResources().getDrawable(R.mipmap.plane)) != null) {

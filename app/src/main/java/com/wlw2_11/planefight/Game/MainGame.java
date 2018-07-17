@@ -194,7 +194,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //敌机移动
-            for(i=1;i<=40;i++) {
+            for(int i=1;i<=40;i++) {
                 enemy[i].y+=enemy[i].v;
                 if(enemy[i].y>=Screen_h){
                     enemy[i].visual=0;
@@ -207,7 +207,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //敌机产生子弹
-            for(i=1;i<=40;i++){
+            for(int i=1;i<=40;i++){
                 if(enemy[i].visual==1){
                     if((enemy[i].y>=100&&enemy[i].y<=110)){
                         eb[ideb].visual = 1;
@@ -293,7 +293,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //敌机子弹运动
-            for(i=1;i<=145;i++){
+            for(int i=1;i<=145;i++){
                 if(eb[i].visual==1){
                     eb[i].y+=eb[i].v;
                 }
@@ -577,7 +577,7 @@ public class MainGame extends View implements Runnable{
 
             }
             //副武器子弹的移动
-            for(i=0;i<=49;i++) {
+            for(int i=0;i<=49;i++) {
                 if (weapons[i].visual == 1) {
                     weapons[i].y -= weapons[i].v*weapons[i].t+weapons[i].a*weapons[i].t*weapons[i].t;
                     weapons[i].t++;
@@ -588,7 +588,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //子弹移动
-            for(i=0;i<=49;i++) {
+            for(int i=0;i<=49;i++) {
                 if (pb[i].visual == 1) {
                     pb[i].y -= pb[i].v;
                     if(pb[i].y<=30){//如果子弹超过边界
@@ -610,7 +610,7 @@ public class MainGame extends View implements Runnable{
             }
             //子弹打到敌机
             for(int i=0;i<=49;i++) {
-                for(j=1;j<=40;j++){
+                for(int j=1;j<=40;j++){
                     if(pb[i].visual==1&&enemy[j].visual==1){//我方子弹和敌机存在
                         if(pb[i].x>=enemy[j].x&&pb[i].x<=enemy[j].x+enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
                             if (pb[i].y <= enemy[j].y + enemy[j].height&&pb[i].y>=enemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
@@ -653,7 +653,7 @@ public class MainGame extends View implements Runnable{
             }
             //副武器打到敌机
             for(int i=0;i<=49;i++) {
-                for(j=1;j<=40;j++){
+                for(int j=1;j<=40;j++){
                     if(weapons[i].visual==1&&enemy[j].visual==1){//我方子弹和敌机存在
                         if(weapons[i].x>=enemy[j].x&&weapons[i].x<=enemy[j].x+enemy[j].width) {//子弹的X轴上的坐标介于敌机的X的坐标和其X坐标加上其宽度
                             if (weapons[i].y <= enemy[j].y + enemy[j].height&&weapons[i].y>=enemy[j].y) {//子弹的纵坐标介于敌机的Y的坐标和其Y坐标加上其长度
@@ -695,7 +695,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //宝物移动
-            for(i=0;i<=65;i++){
+            for(int i=0;i<=65;i++){
                 if(treasure[i].visual==1) {
                     treasure[i].y+=treasure[i].v;//Y轴移动
                     //吃到宝物
@@ -721,7 +721,7 @@ public class MainGame extends View implements Runnable{
             }
             //子弹打到BOSS
             if(boss.visual!=0&&(boss.life>=4)) {
-                for (i = 0; i <= 49; i++) {
+                for (int i = 0; i <= 49; i++) {
                     if(pb[i].visual==1){
                         if(pb[i].x>=boss.x&&pb[i].x<=boss.x+boss.width) {
                             if (pb[i].y <= boss.y + boss.height && pb[i].y >= boss.y) {
@@ -742,7 +742,7 @@ public class MainGame extends View implements Runnable{
             }
             //副武器打到BOSS
             if(boss.visual!=0&&(boss.life>=4)) {
-                for (i = 0; i <= 49; i++) {
+                for (int i = 0; i <= 49; i++) {
                     if(weapons[i].visual==1){
                         if(weapons[i].x>=boss.x&&weapons[i].x<=boss.x+boss.width) {
                             if (weapons[i].y <= boss.y + boss.height && weapons[i].y >= boss.y) {
@@ -768,7 +768,7 @@ public class MainGame extends View implements Runnable{
                 plane.life=0;
             }
             //飞机中敌机子弹
-            for(i=1;i<=145;i++){
+            for(int i=1;i<=145;i++){
                 if(eb[i].visual==1){
                     if(eb[i].x-5>=plane.x&&eb[i].x+5<=plane.x+plane.width){
                         if (eb[i].y-5>=plane.y&&eb[i].y+5<=plane.y+plane.height){
@@ -789,7 +789,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //飞机中BOSS子弹
-            for(i=1;i<=145;i++){
+            for(int i=1;i<=145;i++){
                 if(bb[i].visual==1){
                     if(bb[i].x-5>=plane.x&&bb[i].x+5<=plane.x+plane.width){
                         if (bb[i].y-5>=plane.y&&bb[i].y+5<=plane.y+plane.height){
@@ -810,7 +810,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //飞机相撞
-            for(j=1;j<=40;j++){
+            for(int j=1;j<=40;j++){
                 if(enemy[j].visual==1) {
                     if (enemy[j].x+enemy[j].width-5>= plane.x && enemy[j].x+5<= plane.x + plane.width) {
                         if(enemy[j].y+enemy[j].height>= plane.y&&enemy[j].y<=plane.y+plane.height) {
@@ -907,7 +907,7 @@ public class MainGame extends View implements Runnable{
         }
         //画己方子弹
         paint.setColor(Color.YELLOW);
-        for(j=0;j<=49;j++) {
+        for( int j=0;j<=49;j++) {
             if(pb[j].visual==1) {
                 if(strBullet==0){
                     paint.setColor(Color.YELLOW);
@@ -927,7 +927,7 @@ public class MainGame extends View implements Runnable{
         }
         //画我方的副武器
         paint.setColor(Color.YELLOW);
-        for(j=0;j<=49;j++) {
+        for(int j=0;j<=49;j++) {
             if(weapons[j].visual==1) {
                 canvas.drawBitmap(vice_weapon,null,new Rect(weapons[j].x,weapons[j].y,weapons[j].x+weapons[j].width,weapons[j].y+weapons[j].height),paint);
             }
@@ -941,7 +941,7 @@ public class MainGame extends View implements Runnable{
             }
         }
         //画宝物
-        for(i=0;i<=65;i++){
+        for(int i=0;i<=65;i++){
             if(treasure[i].visual==1){
                 if(treasure[i].varible==1){
                     canvas.drawBitmap(TREA1,null,new Rect(treasure[i].x,treasure[i].y,treasure[i].x+treasure[i].width,treasure[i].y+treasure[i].height),paint);
