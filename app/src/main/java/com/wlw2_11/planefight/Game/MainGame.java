@@ -19,7 +19,6 @@ import android.view.View;
 import com.wlw2_11.planefight.Animation.AnimationManager;
 import com.wlw2_11.planefight.Animation.BoomAnimation;
 import com.wlw2_11.planefight.Animation.ImageAnimation;
-import com.wlw2_11.planefight.Animation.UtilAnimation;
 import com.wlw2_11.planefight.Bullet.BBullet;
 import com.wlw2_11.planefight.Bullet.EBullet;
 import com.wlw2_11.planefight.Bullet.PBullet;
@@ -907,7 +906,7 @@ public class MainGame extends View implements Runnable {
         if (plane.getMissileState()) {
             float boom_x = plane.x- boom.getWidth() / 2+plane.width/2;
             float boom_y = plane.y - boom.getHeight() / 2+plane.height/2;
-           // canvas.drawBitmap(boom, boom_x, boom_y, paint);
+            canvas.drawBitmap(boom, boom_x, boom_y, paint);
             Update(g_c);
             AnimationManager.Render(canvas);
 
@@ -1055,12 +1054,7 @@ public class MainGame extends View implements Runnable {
             AnimationManager.PushAnimation(boom);
         }
 
-        if (c % 100 == 0 ){
-            ImageAnimation util = new UtilAnimation();
-            util.Init( 100, 500, 10);
 
-            AnimationManager.PushAnimation(util);
-        }
     }
 
     private Handler handler = new Handler(){
