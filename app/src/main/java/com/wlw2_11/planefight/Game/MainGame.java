@@ -35,10 +35,10 @@ import java.util.TimerTask;
  * Created by 任建康 on 2018/6/17.
  */
 
-public class MainGame extends View implements Runnable{
+public class MainGame extends View implements Runnable {
     Bitmap img_bg;
     float g_t = 0;   // time
-    float g_bg_speed = 500/60;// scrolling speed, pixel/second
+    float g_bg_speed = 500 / 60;// scrolling speed, pixel/second
     int g_x1, g_y1; // bg_1
     int g_x2, g_y2; // bg_2
     int g_bgH;
@@ -53,29 +53,29 @@ public class MainGame extends View implements Runnable{
     public static int Screen_w;
     public static int Screen_h;
     public static Paint paint;
-    public static int Point_x=0;
-    public static int Point_y=0;
+    public static int Point_x = 0;
+    public static int Point_y = 0;
     public static boolean isdown;
     public int ide;//敌机编号
-    public int numOfDestroy=0;
-    public int ideb=1;//敌机子弹编号
-    public int vde =0;//副武器子弹编号
+    public int numOfDestroy = 0;
+    public int ideb = 1;//敌机子弹编号
+    public int vde = 0;//副武器子弹编号
     public int numOfEnemy;
     public int numOfStrenemy;
     public int i;
     public int j;
     public int time;
-    public int strBullet=0;
-    public int doubleBullet=0;
-    public int mutileweapon=0;//多副武器子弹
+    public int strBullet = 0;
+    public int doubleBullet = 0;
+    public int mutileweapon = 0;//多副武器子弹
     public int idOfTreasure;
-    public boolean isWin=false;
-    public int temp=1;
-    public int id=0;
+    public boolean isWin = false;
+    public int temp = 1;
+    public int id = 0;
     public int background;
     public int background1;
-    public boolean isLose=false;
-    public int score=0;
+    public boolean isLose = false;
+    public int score = 0;
     Random rand;
     Plane plane;
     Boss boss;
@@ -577,7 +577,7 @@ public class MainGame extends View implements Runnable{
 
             }
             //副武器子弹的移动
-            for(int i=0;i<=49;i++) {
+            for(i=0;i<=49;i++) {
                 if (weapons[i].visual == 1) {
                     weapons[i].y -= weapons[i].v*weapons[i].t+weapons[i].a*weapons[i].t*weapons[i].t;
                     weapons[i].t++;
@@ -588,7 +588,7 @@ public class MainGame extends View implements Runnable{
                 }
             }
             //子弹移动
-            for(int i=0;i<=49;i++) {
+            for(i=0;i<=49;i++) {
                 if (pb[i].visual == 1) {
                     pb[i].y -= pb[i].v;
                     if(pb[i].y<=30){//如果子弹超过边界
@@ -742,7 +742,7 @@ public class MainGame extends View implements Runnable{
             }
             //副武器打到BOSS
             if(boss.visual!=0&&(boss.life>=4)) {
-                for (int i = 0; i <= 49; i++) {
+                for (i = 0; i <= 49; i++) {
                     if(weapons[i].visual==1){
                         if(weapons[i].x>=boss.x&&weapons[i].x<=boss.x+boss.width) {
                             if (weapons[i].y <= boss.y + boss.height && weapons[i].y >= boss.y) {
@@ -859,14 +859,16 @@ public class MainGame extends View implements Runnable{
         canvas.drawBitmap(img_bg, null,new Rect(0,g_y2,Screen_w,g_y2+Screen_h), new Paint());
         Log.w("drawBitmap",g_y1+"____________________"+g_y2);
         // repeat
-        if (g_y1 > g_bgH)
-            g_y1 = g_y2 - g_bgH;
-        if (g_y2 > g_bgH)
-            g_y2 = g_y1 - g_bgH;
-        g_t += 0.016;
+        if(!isWin&&!isLose){
+            if (g_y1 > g_bgH)
+                g_y1 = g_y2 - g_bgH;
+            if (g_y2 > g_bgH)
+                g_y2 = g_y1 - g_bgH;
+            g_t += 0.016;
+            g_y1 += g_bg_speed;
+            g_y2 += g_bg_speed;
+        }
 
-        g_y1 += g_bg_speed;
-        g_y2 += g_bg_speed;
         //Log.d(TAG, "onDraw: " + g_t);
         paint.setColor(Color.WHITE);
         paint.setStyle(Paint.Style.FILL);
