@@ -16,6 +16,10 @@ import android.util.Log;
 import android.view.Display;
 import android.view.View;
 
+import com.wlw2_11.planefight.Animation.AnimationManager;
+import com.wlw2_11.planefight.Animation.BoomAnimation;
+import com.wlw2_11.planefight.Animation.ImageAnimation;
+import com.wlw2_11.planefight.Animation.UtilAnimation;
 import com.wlw2_11.planefight.Bullet.BBullet;
 import com.wlw2_11.planefight.Bullet.EBullet;
 import com.wlw2_11.planefight.Bullet.PBullet;
@@ -41,6 +45,7 @@ public class MainGame extends View implements Runnable {
     float g_bg_speed = 500 / 60;// scrolling speed, pixel/second
     int g_x1, g_y1; // bg_1
     int g_x2, g_y2; // bg_2
+    long g_c = 0;
     int g_bgH;
     Timer timer = new Timer();
     private int missileCount; // 导弹的数量
@@ -89,8 +94,8 @@ public class MainGame extends View implements Runnable {
     private Context mcontext;
     public MainGame(Context context, Display display) {//初始化
         super(context);
-
-        missileCount=1;
+        AnimationManager.Init(context);
+        missileCount=100;
         mcontext = context;
         Screen_w = display.getWidth();//获取屏幕的宽
         Screen_h = display.getHeight();///获取屏幕的高
@@ -515,8 +520,8 @@ public class MainGame extends View implements Runnable {
                     }
                 }
                 //按下导弹
-                if (Point_x > 10 && Point_x < 10 + missile_bt.getWidth() && Point_y > missile_bt_y
-                        && Point_y < missile_bt_y + missile_bt.getHeight()+5) {
+                if (Point_x > 10 && Point_x < 15 + missile_bt.getWidth() && Point_y > missile_bt_y
+                        && Point_y < missile_bt_y + missile_bt.getHeight()+10) {
                     if (missileCount > 0) {
                         missileCount--;
                         plane.setMissileState(true);
@@ -535,6 +540,8 @@ public class MainGame extends View implements Runnable {
                         if (boss.visual==1){
                             boss.life-=10;
                         }
+
+
                         new Thread(new Runnable() {
 
                             @Override
@@ -588,7 +595,7 @@ public class MainGame extends View implements Runnable {
                 }
             }
             //子弹移动
-            for(i=0;i<=49;i++) {
+            for(int i=0;i<=49;i++) {
                 if (pb[i].visual == 1) {
                     pb[i].y -= pb[i].v;
                     if(pb[i].y<=30){//如果子弹超过边界
@@ -867,6 +874,7 @@ public class MainGame extends View implements Runnable {
             g_t += 0.016;
             g_y1 += g_bg_speed;
             g_y2 += g_bg_speed;
+            ++g_c;
         }
 
         //Log.d(TAG, "onDraw: " + g_t);
@@ -899,7 +907,9 @@ public class MainGame extends View implements Runnable {
         if (plane.getMissileState()) {
             float boom_x = plane.x- boom.getWidth() / 2+plane.width/2;
             float boom_y = plane.y - boom.getHeight() / 2+plane.height/2;
-            canvas.drawBitmap(boom, boom_x, boom_y, paint);
+           // canvas.drawBitmap(boom, boom_x, boom_y, paint);
+            Update(g_c);
+            AnimationManager.Render(canvas);
 
         }
         //画己方飞机
@@ -1033,6 +1043,26 @@ public class MainGame extends View implements Runnable {
         }
 
     }
+
+    private void Update(long c) {
+        if (c % 20 == 0 ){
+            ImageAnimation boom = new BoomAnimation();
+            boom.Init(
+                    new Random().nextInt(600)+10,
+                    new Random().nextInt(1200)+10,
+                    new Random().nextInt(5)+1);
+
+            AnimationManager.PushAnimation(boom);
+        }
+
+        if (c % 100 == 0 ){
+            ImageAnimation util = new UtilAnimation();
+            util.Init( 100, 500, 10);
+
+            AnimationManager.PushAnimation(util);
+        }
+    }
+
     private Handler handler = new Handler(){
         public void handleMessage(Message msg){
             switch (msg.what){
