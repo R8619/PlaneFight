@@ -16,7 +16,7 @@ public class MissileGoods extends GameGoods {
     @Override
     protected void initBitmap() {
         bmp = BitmapFactory.decodeResource(resources,R.mipmap.missile_goods);
-        object_width = bmp.getWidth();
-        object_height = bmp.getHeight();
+        object_width = bmp.getWidth()*2;
+        object_height = bmp.getHeight()*2;
     }
 }

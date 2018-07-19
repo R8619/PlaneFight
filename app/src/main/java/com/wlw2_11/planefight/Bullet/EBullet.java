@@ -12,7 +12,7 @@ public class EBullet extends WeaponFactory {
         this.height=44;
         this.visual=0;
         this.y=0;
-        this.v=30;
+        this.v=50;
         boo=0;
     }
 }

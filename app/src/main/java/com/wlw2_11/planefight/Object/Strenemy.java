@@ -22,7 +22,7 @@ public class Strenemy {
         width=180;//敌机的宽度
         height=135;//敌机的长度
         visual=0;
-        life=2;
+        life=12;
         v=40;//速度
         x=random.nextInt(900);//x轴随机
         boo=0;

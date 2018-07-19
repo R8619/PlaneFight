@@ -13,8 +13,8 @@ public class Treasure {
     public int visual;
     public int varible;//宝物的类型
     public Treasure(){
-        width=80;
-        height=80;
+        width=120;
+        height=120;
         v=20;
         visual=0;
         varible=0;

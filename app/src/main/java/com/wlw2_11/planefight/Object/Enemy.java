@@ -23,7 +23,7 @@ public class Enemy {
         width=150;//敌机的宽度
         height=124;//敌机的长度
         visual=0;
-        life=2;
+        life=6;
         v=20;//速度
         vx=10;
         x=random.nextInt(900);//x轴随机

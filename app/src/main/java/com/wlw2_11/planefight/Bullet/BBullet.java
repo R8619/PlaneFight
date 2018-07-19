@@ -9,7 +9,7 @@ public class BBullet extends WeaponFactory{
         this.height=60;
         this.visual=0;
         this.y=0;
-        this.v=30;
+        this.v=40;
         boo=0;
     }
 }

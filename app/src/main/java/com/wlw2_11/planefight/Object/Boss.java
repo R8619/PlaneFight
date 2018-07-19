@@ -22,7 +22,7 @@ public class Boss {
         height=400;
         v=10;
         visual=0;
-        life=200;
+        life=500;
         vx=20;
         boo=0;
     }
